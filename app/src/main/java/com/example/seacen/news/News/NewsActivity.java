@@ -1,5 +1,6 @@
 package com.example.seacen.news.News;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,11 +33,13 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
      * @param position
      * @param id
      */
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         Log.i("indexPath.row", String.valueOf(position));
+        // FIXME: - 多次点击多次执行
         // TODO: - 进入新闻详情
-
+        // 测试进入详细
+        Intent intent = new Intent(NewsActivity.this, NewsDetailActivity.class);
+        startActivity(intent);
     }
 
     /**
