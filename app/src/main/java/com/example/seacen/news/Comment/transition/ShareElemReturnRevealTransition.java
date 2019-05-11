@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
- * Created by chenzhiyong on 16/6/7.
+ * 退出的覆盖动画
  */
 public class ShareElemReturnRevealTransition extends Transition {
     private static final String TAG = "ShareElemReturnRevealTransition";

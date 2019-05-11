@@ -18,6 +18,7 @@ package com.example.seacen.news.Comment.transition;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -72,6 +73,7 @@ public class ChangePosition extends Transition {
         captureValues(transitionValues);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public Animator createAnimator(ViewGroup sceneRoot,
                                    TransitionValues startValues, TransitionValues endValues) {

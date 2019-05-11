@@ -6,21 +6,21 @@
     android:layout_height="match_parent"
     >
 
-    <TextView
-        android:id="@+id/comment_activity_title_tv"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/top_bar_height"
-        android:background="@color/action_bar_black_color"
-        android:gravity="center"
-        android:text="评论"
-        android:textColor="@color/white_35_alpha"
-        android:textSize="14sp" />
+    <!--<TextView-->
+        <!--android:id="@+id/comment_activity_title_tv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/top_bar_height"-->
+        <!--android:background="@color/action_bar_black_color"-->
+        <!--android:gravity="center"-->
+        <!--android:text="评论"-->
+        <!--android:textColor="@color/white_35_alpha"-->
+        <!--android:textSize="14sp" />-->
 
 
     <RelativeLayout
         android:id="@+id/comment_activity_bottom_send_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottom_bg"
         android:orientation="horizontal">
@@ -31,10 +31,10 @@
             android:layout_height="45dp"
             android:layout_alignBottom="@+id/comment_activity_edit_et"
             android:layout_alignParentLeft="true"
+            android:layout_marginBottom="10dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:src="@drawable/icon_back_pressed"
-            />
+            android:src="@drawable/icon_back_pressed" />
 
         <TextView
             android:id="@+id/tv_send"
@@ -42,9 +42,10 @@
             android:layout_height="45dp"
             android:layout_alignBottom="@+id/comment_activity_edit_et"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:shadowColor="@color/colorPrimary"
             android:gravity="center"
-            android:text="发送"
-            />
+            android:text="发送" />
 
         <EditText
             android:id="@+id/comment_activity_edit_et"
@@ -55,7 +56,7 @@
             android:layout_toRightOf="@+id/comment_activity_img_back"
             android:background="@drawable/inputline"
             android:cursorVisible="true"
-            android:hint="asdasd"
+            android:hint="请输入评论"
             android:textCursorDrawable="@null"
             android:textSize="13sp"/>
 
@@ -63,23 +64,21 @@
 
 
     <FrameLayout
-        android:id="@+id/comment_box"
+        android:id="@+id/comment_activity_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/comment_activity_bottom_send_bar"
-        android:layout_below="@id/comment_activity_title_tv"
         android:transitionName="comment"
         >
 
-        <LinearLayout
-            android:id="@+id/comment_activity_content"
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
+        </ListView>
 
-
-        </LinearLayout>
     </FrameLayout>
 
 </RelativeLayout>
+
+<!--android:layout_below="@id/comment_activity_title_tv"-->

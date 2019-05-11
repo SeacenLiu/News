@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 /**
- * Created by chenzhiyong on 16/6/7.
  * 进入时的揭露动画
  */
 public class ShareElemEnterRevealTransition extends Transition {
