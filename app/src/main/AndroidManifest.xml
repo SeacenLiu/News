@@ -26,8 +26,9 @@
         </activity>
 
         <activity android:name=".News.NewsActivity"></activity>
-        <activity android:name=".News.NewsDetailActivity">
-        </activity>
+        <activity android:name=".News.NewsDetailActivity"></activity>
+
+        <activity android:name=".Comment.CommentActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
