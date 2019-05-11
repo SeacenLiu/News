@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.example.seacen.news.News.NewsActivity">
+
+    <ListView
+        android:id="@+id/news_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="1dp"
+        android:minHeight="120dp"
+        tools:listitem="@layout/cell_news"
+        >
+
+    </ListView>
+
+</LinearLayout>
