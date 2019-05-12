@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     >
 
-    <WebView
+    <com.example.seacen.news.News.ProgressWebView
         android:id="@+id/news_detail_activity_wb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-    </WebView>
+    </com.example.seacen.news.News.ProgressWebView>
 
     <ImageView
         android:id="@+id/news_detail_activity_comment_iv"
