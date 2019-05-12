@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.transition.TransitionSet;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.seacen.news.Comment.transition.ChangeColor;
@@ -96,5 +97,18 @@ public class CommentActivity extends AppCompatActivity {
         transitionSet.setDuration(900);
 
         return transitionSet;
+    }
+
+    // 有这个方法才可以跳回前一个界面
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
