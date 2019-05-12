@@ -2,27 +2,19 @@ package com.example.seacen.news.Comment.transition;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.TimeInterpolator;
 import android.graphics.Rect;
 import android.transition.Transition;
 import android.transition.TransitionValues;
-import android.util.ArrayMap;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
-/**
- * 退出的覆盖动画
- */
 public class ShareElemReturnRevealTransition extends Transition {
     private static final String TAG = "ShareElemReturnRevealTransition";
 
     private static final String PROPNAME_BACKGROUND = "custom_reveal:change_radius:radius";
-
-    private boolean hasAnim = false;
 
     private View animView;
 

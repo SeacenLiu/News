@@ -21,14 +21,12 @@ import com.example.seacen.news.Comment.transition.CommentEnterTransition;
 import com.example.seacen.news.Comment.transition.ShareElemEnterRevealTransition;
 import com.example.seacen.news.Comment.transition.ShareElemReturnChangePosition;
 import com.example.seacen.news.Comment.transition.ShareElemReturnRevealTransition;
-import com.example.seacen.news.News.NewsActivity;
-import com.example.seacen.news.News.NewsCell;
-import com.example.seacen.news.News.NewsDetailActivity;
 import com.example.seacen.news.R;
 
 public class CommentActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "CommentActivity";
 
+    View topBar;
     View bottomSendBar;
     View commentContent;
     ListView listView;
@@ -37,6 +35,7 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_activity);
+        topBar = findViewById(R.id.comment_activity_top_bar);
         commentContent = findViewById(R.id.comment_activity_content);
         bottomSendBar = findViewById(R.id.comment_activity_bottom_send_bar);
         listView = findViewById(R.id.comment_activity_body_lv);
@@ -80,11 +79,12 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("评论区");
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.hide();
     }
 
     private void setTransition() {
         // 底部输入框的进入动画
-        getWindow().setEnterTransition(new CommentEnterTransition(this, bottomSendBar));
+        getWindow().setEnterTransition(new CommentEnterTransition(this, topBar, bottomSendBar));
         // 入场动画
         getWindow().setSharedElementEnterTransition(buildShareElemEnterSet());
         // 退场动画

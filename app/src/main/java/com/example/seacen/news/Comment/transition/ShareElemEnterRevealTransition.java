@@ -11,15 +11,10 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-/**
- * 进入时的揭露动画
- */
 public class ShareElemEnterRevealTransition extends Transition {
     private static final String TAG = "ShareElemEnterRevealTransition";
 
     private static final String PROPNAME_RADIUS = "custom_reveal:change_radius:radius";
-
-    private boolean hasAnim = false;
 
     private View animView;
 
@@ -52,9 +47,7 @@ public class ShareElemEnterRevealTransition extends Transition {
         int endRadius = (int) endValues.values.get(PROPNAME_RADIUS);
 
         if (view == animView) {
-            Animator reveal = createAnimator(view, startRadius, endRadius);
-            hasAnim = true;
-            return reveal;
+            return createAnimator(view, startRadius, endRadius);
         }
 
         return null;
@@ -72,9 +65,9 @@ public class ShareElemEnterRevealTransition extends Transition {
     public static class NoPauseAnimator extends Animator {
         private final Animator mAnimator;
         private final ArrayMap<AnimatorListener, AnimatorListener> mListeners =
-                new ArrayMap<AnimatorListener, AnimatorListener>();
+                new ArrayMap<>();
 
-        public NoPauseAnimator(Animator animator) {
+        NoPauseAnimator(Animator animator) {
             mAnimator = animator;
         }
 
@@ -109,7 +102,7 @@ public class ShareElemEnterRevealTransition extends Transition {
 
         @Override
         public ArrayList<AnimatorListener> getListeners() {
-            return new ArrayList<AnimatorListener>(mListeners.keySet());
+            return new ArrayList<>(mListeners.keySet());
         }
 
         @Override
@@ -199,7 +192,7 @@ public class ShareElemEnterRevealTransition extends Transition {
         private final Animator mAnimator;
         private final Animator.AnimatorListener mListener;
 
-        public AnimatorListenerWrapper(Animator animator, Animator.AnimatorListener listener) {
+        AnimatorListenerWrapper(Animator animator, Animator.AnimatorListener listener) {
             mAnimator = animator;
             mListener = listener;
         }

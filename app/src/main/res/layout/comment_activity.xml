@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/comment_activity_all_v"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+
+    <TextView
+        android:id="@+id/comment_activity_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="评论"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        />
 
     <RelativeLayout
         android:id="@+id/comment_activity_bottom_send_bar"
@@ -12,7 +24,9 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottom_bg"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <ImageView
             android:id="@+id/comment_activity_img_back"
@@ -47,6 +61,9 @@
             android:cursorVisible="true"
             android:hint="请输入评论"
             android:textCursorDrawable="@null"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:textSize="13sp"/>
 
     </RelativeLayout>
@@ -57,6 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/comment_activity_bottom_send_bar"
+        android:layout_below="@id/comment_activity_top_bar"
         android:transitionName="comment"
         >
 
