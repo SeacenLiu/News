@@ -47,29 +47,17 @@ public class SCNetworkTool {
         return SingletonHolder.INSTANCE;
     }
 
-    /**
-     * 用于提供一个统一添加请求头的位置
-     * @return OkHttpClient
-     */
-    public static OkHttpClient genericClient() {
-        OkHttpClient httpClient = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request()
-                                .newBuilder()
-                                .addHeader("device", "Andriod")
-                                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                                .build();
-                        return chain.proceed(request);
-                    }
-
-                })
-                .build();
-
-        return httpClient;
+    public void normalEequest(SCNetworkPort port, SCNetworkMethod method, Map<String, String> params, SCNetworkHandler handler) {
+        okCoreRequeest(port.path(), method, params, handler);
     }
 
+    /**
+     * 核心请求方法
+     * @param urlstr
+     * @param method
+     * @param params
+     * @param handler
+     */
     public void okCoreRequeest(String urlstr, SCNetworkMethod method, Map<String, String> params, final SCNetworkHandler handler) {
         OkHttpClient okHttpClient = genericClient();
         Request request = null;
@@ -127,6 +115,29 @@ public class SCNetworkTool {
             return;
         }
 
+    }
+
+    /**
+     * 用于提供一个统一添加请求头的位置
+     * @return OkHttpClient
+     */
+    private static OkHttpClient genericClient() {
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request()
+                                .newBuilder()
+                                .addHeader("device", "Andriod")
+                                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                                .build();
+                        return chain.proceed(request);
+                    }
+
+                })
+                .build();
+
+        return httpClient;
     }
 
     /**

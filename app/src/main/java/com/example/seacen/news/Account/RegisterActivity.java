@@ -7,11 +7,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.seacen.news.R;
+import com.example.seacen.news.Utils.Network.SCNetworkHandler;
+import com.example.seacen.news.Utils.Network.SCNetworkMethod;
+import com.example.seacen.news.Utils.Network.SCNetworkPort;
+import com.example.seacen.news.Utils.Network.SCNetworkTool;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RegisterActivity extends AppCompatActivity {
+
+    static String TAG = "RegisterActivity";
 
     EditText userEt, passwordEt, passwordAgEt;
     Button registerBtn;
@@ -29,7 +39,22 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO: - 注册操作
+                Map<String, String> params = new HashMap<>();
+                params.put("name", userEt.getText().toString());
+                params.put("passwd", passwordEt.getText().toString());
+                SCNetworkTool.shared().normalEequest(SCNetworkPort.Register, SCNetworkMethod.POST, params, new SCNetworkHandler() {
+                    @Override
+                    public void successHandle(String bodyStr) {
+                        Toast toast = Toast.makeText(RegisterActivity.this, bodyStr, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
 
+                    @Override
+                    public void errorHandle(Exception error) {
+                        Toast toast = Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }
         });
 
