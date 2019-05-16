@@ -5,6 +5,9 @@ import android.os.Looper;
 import android.os.StrictMode;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -72,7 +75,8 @@ public class SCNetworkTool {
                         Request request = chain.request()
                                 .newBuilder()
                                 .addHeader("Device", "Andriod")
-                                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+//                                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                                .addHeader("Content-Type", "application/json; charset=UTF-8")
                                 .build();
                         return chain.proceed(request);
                     }
@@ -124,8 +128,10 @@ public class SCNetworkTool {
                             .build();
                     break;
                 case POST:
-                    MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded; charset=UTF-8");
-                    String requestBody = getRequestData(params, "utf-8").toString();
+//                    MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded; charset=UTF-8");
+//                    String requestBody = getRequestData(params, "utf-8").toString();
+                    MediaType mediaType = MediaType.parse("application/json; charset=UTF-8");
+                    String requestBody = JSONObject.toJSON(params).toString();
                     request = new Request.Builder()
                             .url(url)
                             .post(RequestBody.create(mediaType, requestBody))

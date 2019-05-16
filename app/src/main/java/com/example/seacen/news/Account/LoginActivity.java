@@ -50,43 +50,23 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO: -  登录操作
                 Map<String, String> params = new HashMap<>();
-                params.put("logname", userEt.getText().toString());
-                params.put("password", passwordEt.getText().toString());
-                // Get 测试
-//                SCNetworkTool.shared().okCoreRequeest(
-//                        "http://172.20.10.6:8080/loginServlet",
-//                        SCNetworkMethod.GET,
-//                        params,
-//                        new SCNetworkHandler() {
-//                            @Override
-//                            public void successHandle(String bodyStr) {
-//                                Log.i(TAG, bodyStr);
-//                                TextView tv = findViewById(R.id.login_activity_test_tv);
-//                                tv.setText(bodyStr);
-//                            }
-//
-//                            @Override
-//                            public void errorHandle(Exception error) {
-//                                Log.i(TAG, error.toString());
-//                            }
-//                        });
-                SCNetworkTool.shared().okCoreRequeest(
-                        "http://172.20.10.6:8080/loginServlet",
-                        SCNetworkMethod.POST,
-                        params,
-                        new SCNetworkHandler() {
-                            @Override
-                            public void successHandle(String bodyStr) {
-                                Log.i(TAG, bodyStr);
-                                TextView tv = findViewById(R.id.login_activity_test_tv);
-                                tv.setText(bodyStr);
-                            }
+                params.put("name", userEt.getText().toString());
+                params.put("passwd", passwordEt.getText().toString());
+                SCNetworkTool.shared().normalEequest(SCNetworkPort.Login, SCNetworkMethod.POST, params, new SCNetworkHandler() {
+                    @Override
+                    public void successHandle(String bodyStr) {
+                        Log.i(TAG, bodyStr);
+                        TextView textView = findViewById(R.id.login_activity_test_tv);
+                        textView.setText(bodyStr);
+                    }
 
-                            @Override
-                            public void errorHandle(Exception error) {
-                                Log.i(TAG, error.toString());
-                            }
-                        });
+                    @Override
+                    public void errorHandle(Exception error) {
+                        Log.i(TAG, error.toString());
+                        TextView textView = findViewById(R.id.login_activity_test_tv);
+                        textView.setText(error.toString());
+                    }
+                });
             }
         });
 
