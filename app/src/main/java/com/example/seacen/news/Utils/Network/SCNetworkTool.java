@@ -33,8 +33,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-// 172.20.10.6
-
 /**
  * 网络工具类
  */
@@ -185,7 +183,7 @@ public class SCNetworkTool {
      * @throws MalformedURLException
      */
     private URL jointGetURL(URL url, Map<String, String> params) throws MalformedURLException {
-        if (params.isEmpty())
+        if (params == null || params.isEmpty())
             return url;
         StringBuffer buffer = new StringBuffer(url.toString());
         boolean isFirst = true;

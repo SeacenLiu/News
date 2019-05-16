@@ -9,12 +9,25 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.seacen.news.R;
+import com.example.seacen.news.Utils.Network.SCNetworkHandler;
+import com.example.seacen.news.Utils.Network.SCNetworkMethod;
+import com.example.seacen.news.Utils.Network.SCNetworkPort;
+import com.example.seacen.news.Utils.Network.SCNetworkTool;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    static String TAG = "NewsActivity";
 
     ListView listView;
+    List<NewsModel> models = new ArrayList<>();
+    NewsAdapter adapter = new NewsAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +35,33 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.news_activity);
         listView = findViewById(R.id.news_lv);
 
-        listView.setAdapter(new NewsAdapter());
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+
+        testLoadNews();
+    }
+
+    private void testLoadNews() {
+        SCNetworkTool.shared().normalEequest(SCNetworkPort.IndexNews, SCNetworkMethod.GET, null, new SCNetworkHandler() {
+            @Override
+            public void successHandle(String bodyStr) {
+                Log.i(TAG, bodyStr);
+                JSONObject response = JSONObject.parseObject(bodyStr);
+                int code = (int)response.get("status");
+                String info = response.get("msg").toString();
+                JSONArray array = (JSONArray) response.get("data");
+                List<NewsModel> newss = array.toJavaList(NewsModel.class);
+                models = newss;
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void errorHandle(Exception error) {
+                Log.i(TAG, error.toString());
+                Toast toast = Toast.makeText(NewsActivity.this, error.toString(), Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 
     /**
@@ -48,7 +86,7 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
     private class NewsAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return 10;
+            return models.size();
         }
 
         @Override
@@ -66,7 +104,13 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
             if (convertView == null) {
                 convertView = new NewsCell(NewsActivity.this);
             }
-            return convertView;
+            // config view
+            NewsCell cell = (NewsCell)convertView;
+            NewsModel model = models.get(position);
+            cell.titleTv.setText(model.getTitle());
+            cell.detailTv.setText(model.getIntro());
+
+            return cell;
         }
     }
 }
