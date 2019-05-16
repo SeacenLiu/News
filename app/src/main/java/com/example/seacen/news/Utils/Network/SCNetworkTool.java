@@ -13,10 +13,16 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -36,30 +42,76 @@ public class SCNetworkTool {
     /**
      * 单例的静态内部类
      */
-    private  static  class SingletonHolder {
-        private static final  SCNetworkTool INSTANCE = new SCNetworkTool();
+    private static class SingletonHolder {
+        private static final SCNetworkTool INSTANCE = new SCNetworkTool();
     }
-    private SCNetworkTool () {
+
+    private SCNetworkTool() {
         // 设置线程策略
         setPolicy();
     }
-    public  static final SCNetworkTool shared() {
+
+    public static final SCNetworkTool shared() {
         return SingletonHolder.INSTANCE;
     }
 
+    private OkHttpClient client = null;
+
+    /**
+     * okhttpClient 配置
+     *
+     * @return OkHttpClient
+     */
+    private static OkHttpClient genericClient() {
+        HashMap<HttpUrl, List> cookieStore =new HashMap<>();
+
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() { // 拦截器
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request()
+                                .newBuilder()
+                                .addHeader("Device", "Andriod")
+                                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                                .build();
+                        return chain.proceed(request);
+                    }
+
+                })
+                .cookieJar(new CookieJar() { // 添加 cookie
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        cookieStore.put(url, cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        List cookies = cookieStore.get(url);
+                        return cookies !=null ? cookies : new ArrayList();
+                    }
+                })
+                .build();
+
+        return httpClient;
+    }
+
     public void normalEequest(SCNetworkPort port, SCNetworkMethod method, Map<String, String> params, SCNetworkHandler handler) {
-        okCoreRequeest(port.path(), method, params, handler);
+        okCoreRequeest(port, method, params, handler);
     }
 
     /**
      * 核心请求方法
-     * @param urlstr
+     *
+     * @param port
      * @param method
      * @param params
      * @param handler
      */
-    public void okCoreRequeest(String urlstr, SCNetworkMethod method, Map<String, String> params, final SCNetworkHandler handler) {
-        OkHttpClient okHttpClient = genericClient();
+    public void okCoreRequeest(SCNetworkPort port, SCNetworkMethod method, Map<String, String> params, final SCNetworkHandler handler) {
+        if (client == null) {
+            client = genericClient();
+        }
+        String urlstr = port.path();
         Request request = null;
         try {
             URL url = new URL(urlstr);
@@ -80,7 +132,8 @@ public class SCNetworkTool {
                             .build();
                     break;
             }
-            Call call = okHttpClient.newCall(request);
+
+            Call call = client.newCall(request);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -109,7 +162,7 @@ public class SCNetworkTool {
                     });
                 }
             });
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             handler.errorHandle(e);
             return;
@@ -118,31 +171,9 @@ public class SCNetworkTool {
     }
 
     /**
-     * 用于提供一个统一添加请求头的位置
-     * @return OkHttpClient
-     */
-    private static OkHttpClient genericClient() {
-        OkHttpClient httpClient = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request()
-                                .newBuilder()
-                                .addHeader("device", "Andriod")
-                                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                                .build();
-                        return chain.proceed(request);
-                    }
-
-                })
-                .build();
-
-        return httpClient;
-    }
-
-    /**
      * 拼接GET连接
-     * @param url 原连接
+     *
+     * @param url    原连接
      * @param params 参数字典
      * @return 拼接好的URL
      * @throws MalformedURLException
@@ -153,13 +184,13 @@ public class SCNetworkTool {
         StringBuffer buffer = new StringBuffer(url.toString());
         boolean isFirst = true;
         buffer.append("?");
-        for (Map.Entry<String, String> entry: params.entrySet()) {
+        for (Map.Entry<String, String> entry : params.entrySet()) {
             buffer.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
         }
         //删除最后的一个"&"
         buffer.deleteCharAt(buffer.length() - 1);
         URL res = new URL(buffer.toString());
-        return  res;
+        return res;
     }
 
     private URL jointGetURL(String urlstr, Map<String, String> params) throws MalformedURLException {
@@ -169,6 +200,7 @@ public class SCNetworkTool {
 
     /**
      * 获取请求数据
+     *
      * @param params 参数字典
      * @param encode 编码格式
      * @return StringBuffer
