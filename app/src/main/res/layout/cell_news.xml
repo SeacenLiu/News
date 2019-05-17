@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_srlBackgroundColor="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="120dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -10,7 +11,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:paddingRight="15dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/cell_news_cover_iv"
@@ -22,9 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/cell_news_title_tv"
@@ -44,6 +45,7 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
                 android:text="这是一个新闻简介，这是一个新闻简介啊的。这是一个新闻简介，这是一个新闻简介。这是一个新闻简介"
+                android:lines="2"
                 android:textAlignment="textStart"
                 android:textSize="15dp" />
 
@@ -52,6 +54,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/cell_news_source_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="新闻来源"
+                    android:textAlignment="textStart"
+                    android:textSize="10dp" />
 
                 <TextView
                     android:id="@+id/cell_news_time_tv"

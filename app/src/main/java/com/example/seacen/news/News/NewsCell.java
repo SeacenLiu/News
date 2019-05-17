@@ -14,7 +14,7 @@ public class NewsCell extends LinearLayout {
 
     ImageView coverImg;
     TextView titleTv, detailTv;
-    TextView timeTv, readTv, commentTv;
+    TextView sourceTv, timeTv, readTv, commentTv;
 
     /**
      * 在java代码里new的时候会用到
@@ -52,6 +52,7 @@ public class NewsCell extends LinearLayout {
         coverImg = findViewById(R.id.cell_news_cover_iv);
         titleTv = findViewById(R.id.cell_news_title_tv);
         detailTv = findViewById(R.id.cell_news_detail_tv);
+        sourceTv = findViewById(R.id.cell_news_source_tv);
         timeTv = findViewById(R.id.cell_news_time_tv);
         readTv = findViewById(R.id.cell_news_read_tv);
         commentTv = findViewById(R.id.cell_news_comment_tv);

@@ -2,6 +2,7 @@ package com.example.seacen.news.News;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,11 +14,15 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bumptech.glide.Glide;
 import com.example.seacen.news.R;
 import com.example.seacen.news.Utils.Network.SCNetworkHandler;
 import com.example.seacen.news.Utils.Network.SCNetworkMethod;
 import com.example.seacen.news.Utils.Network.SCNetworkPort;
 import com.example.seacen.news.Utils.Network.SCNetworkTool;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +31,10 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
     static String TAG = "NewsActivity";
 
     ListView listView;
+    RefreshLayout refreshLayout;
     List<NewsModel> models = new ArrayList<>();
     NewsAdapter adapter = new NewsAdapter();
+    private int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +45,45 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
-        testLoadNews();
+        refreshLayout = (RefreshLayout)findViewById(R.id.news_refreshLayout);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                index = 0;
+                SCNetworkTool.shared().normalEequest(SCNetworkPort.IndexNews, SCNetworkMethod.GET, null, new SCNetworkHandler() {
+                    @Override
+                    public void successHandle(String bodyStr) {
+                        Log.i(TAG, bodyStr);
+                        JSONObject response = JSONObject.parseObject(bodyStr);
+                        int code = (int)response.get("status");
+                        String info = response.get("msg").toString();
+                        JSONArray array = (JSONArray) response.get("data");
+                        List<NewsModel> newss = array.toJavaList(NewsModel.class);
+                        models = newss;
+                        adapter.notifyDataSetChanged();
+                        refreshlayout.finishRefresh(0);
+                    }
+
+                    @Override
+                    public void errorHandle(Exception error) {
+                        Log.i(TAG, error.toString());
+                        Toast toast = Toast.makeText(NewsActivity.this, error.toString(), Toast.LENGTH_SHORT);
+                        toast.show();
+                        refreshlayout.finishRefresh(false);//传入false表示刷新失败
+                    }
+                });
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                // TODO: - 加载下一页
+                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+            }
+        });
     }
 
-    private void testLoadNews() {
+    private void refreshNews() {
         SCNetworkTool.shared().normalEequest(SCNetworkPort.IndexNews, SCNetworkMethod.GET, null, new SCNetworkHandler() {
             @Override
             public void successHandle(String bodyStr) {
@@ -109,7 +151,12 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
             NewsModel model = models.get(position);
             cell.titleTv.setText(model.getTitle());
             cell.detailTv.setText(model.getIntro());
-
+//            Glide.with(cell).load(model.img).into(cell.coverImg);
+            cell.sourceTv.setText(model.getSource());
+            // FIXME: - 时间需要做处理
+//            cell.timeTv.setText(model.getTime());
+            cell.readTv.setText("阅读量："+model.getReadnum());
+            cell.commentTv.setText("阅读量："+model.getCommentnum());
             return cell;
         }
     }
