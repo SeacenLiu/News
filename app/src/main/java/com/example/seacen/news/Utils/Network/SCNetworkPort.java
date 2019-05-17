@@ -7,7 +7,7 @@ public enum SCNetworkPort {
     NewsDetail("/news/getdetailbyname"),
     Classify("/news/classify");
 
-    private String root = "http://47.106.248.255:8080";
+    static String root = "http://47.106.248.255:8080";
 
     private String subpath;
     SCNetworkPort(String s) {

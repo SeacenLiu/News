@@ -71,10 +71,11 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 index = 0;
-                SCNetworkTool.shared().normalEequest(SCNetworkPort.IndexNews, SCNetworkMethod.GET, null, new SCNetworkHandler() {
+                SCNetworkTool.shared().loadClassifyNews(name, new SCNetworkHandler() {
                     @Override
                     public void successHandle(String bodyStr) {
                         Log.i(TAG, bodyStr);
+                        // FIXME: - 不安全！！！
                         JSONObject response = JSONObject.parseObject(bodyStr);
                         int code = (int)response.get("status");
                         String info = response.get("msg").toString();
@@ -104,6 +105,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
         });
     }
 
+    // 这个是加载首页的！！！
     private void refreshNews() {
         SCNetworkTool.shared().normalEequest(SCNetworkPort.IndexNews, SCNetworkMethod.GET, null, new SCNetworkHandler() {
             @Override

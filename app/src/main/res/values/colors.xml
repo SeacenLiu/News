@@ -4,7 +4,8 @@
     <color name="colorPrimary">#2196F3</color>
     <!--<color name="colorPrimaryDark">#00574B</color>-->
     <color name="colorPrimaryDark">#2196F3</color>
-    <color name="colorAccent">#D81B60</color>
+    <!--<color name="colorAccent">#D81B60</color>-->
+    <color name="colorAccent">#4524BD</color>
 
     <color name="action_bar_black_color">#0e0e0e</color>
 

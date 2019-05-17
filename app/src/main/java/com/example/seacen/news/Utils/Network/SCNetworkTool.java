@@ -97,23 +97,38 @@ public class SCNetworkTool {
         return httpClient;
     }
 
-    public void normalEequest(SCNetworkPort port, SCNetworkMethod method, Map<String, String> params, SCNetworkHandler handler) {
-        okCoreRequeest(port, method, params, handler);
+    public void loadClassifyNews(String name, SCNetworkHandler handler) {
+        if (name.equals("要闻")) {
+            okCoreRequeest(SCNetworkPort.IndexNews.path(), SCNetworkMethod.GET, null, handler);
+            return;
+        }
+        String urlStr = SCNetworkPort.root + "/" + name;
+        okCoreRequeest(urlStr, SCNetworkMethod.GET, null, handler);
     }
 
     /**
-     * 核心请求方法
-     *
+     * 普通请求方法
      * @param port
      * @param method
      * @param params
      * @param handler
      */
-    public void okCoreRequeest(SCNetworkPort port, SCNetworkMethod method, Map<String, String> params, final SCNetworkHandler handler) {
+    public void normalEequest(SCNetworkPort port, SCNetworkMethod method, Map<String, String> params, SCNetworkHandler handler) {
+        okCoreRequeest(port.path(), method, params, handler);
+    }
+
+    /**
+     * 核心请求方法
+     *
+     * @param urlstr
+     * @param method
+     * @param params
+     * @param handler
+     */
+    public void okCoreRequeest(String urlstr, SCNetworkMethod method, Map<String, String> params, final SCNetworkHandler handler) {
         if (client == null) {
             client = genericClient();
         }
-        String urlstr = port.path();
         Request request = null;
         try {
             URL url = new URL(urlstr);
