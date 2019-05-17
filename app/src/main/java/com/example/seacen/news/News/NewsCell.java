@@ -12,9 +12,9 @@ import com.example.seacen.news.R;
 
 public class NewsCell extends LinearLayout {
 
-    ImageView coverImg;
-    TextView titleTv, detailTv;
-    TextView sourceTv, timeTv, readTv, commentTv;
+    public ImageView coverImg;
+    public TextView titleTv, detailTv;
+    public TextView sourceTv, timeTv, readTv, commentTv;
 
     /**
      * 在java代码里new的时候会用到

@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context="com.example.seacen.news.News.NewsActivity">
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/news_refreshLayout"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:tabBackground="@color/white"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="scrollable"
+        app:tabMinWidth="40dp"
+        app:tabPaddingStart="5dp"
+        app:tabPaddingEnd="5dp"
+        app:tabSelectedTextColor="@color/head_selected"
+        app:tabTextAppearance="@style/tab_head"
+        app:tabTextColor="@color/head_default" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        app:srlPrimaryColor="@color/colorPrimary"
-        app:srlAccentColor="@android:color/white"
-        app:srlEnablePreviewInEditMode="true">
-        <!--srlAccentColor srlPrimaryColor 将会改变 Header 和 Footer 的主题颜色-->
-        <!--srlEnablePreviewInEditMode 可以开启和关闭预览功能-->
-        <com.scwang.smartrefresh.layout.header.BezierRadarHeader
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <ListView
-            android:id="@+id/news_lv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="1dp"
-            tools:listitem="@layout/cell_news"
-            >
-
-        </ListView>
-        <com.scwang.smartrefresh.layout.footer.BallPulseFooter
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:background="@color/white" />
 
 </LinearLayout>

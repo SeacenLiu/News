@@ -22,4 +22,7 @@
     <color name="black_80_alpha">#cc000000</color>
     <color name="black_85_alpha">#d9000000</color>
     <color name="black_90_alpha">#e6000000</color>
+
+    <color name="head_selected">#2196F3</color>
+    <color name="head_default">#5b666f</color>
 </resources>

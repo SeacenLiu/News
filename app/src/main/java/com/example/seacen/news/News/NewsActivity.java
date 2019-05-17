@@ -1,164 +1,56 @@
 package com.example.seacen.news.News;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.bumptech.glide.Glide;
 import com.example.seacen.news.R;
-import com.example.seacen.news.Utils.Network.SCNetworkHandler;
-import com.example.seacen.news.Utils.Network.SCNetworkMethod;
-import com.example.seacen.news.Utils.Network.SCNetworkPort;
-import com.example.seacen.news.Utils.Network.SCNetworkTool;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class NewsActivity extends AppCompatActivity {
     static String TAG = "NewsActivity";
 
-    ListView listView;
-    RefreshLayout refreshLayout;
-    List<NewsModel> models = new ArrayList<>();
-    NewsAdapter adapter = new NewsAdapter();
-    private int index = 0;
+    TabLayout tabLayout;
+    ViewPager viewPager;
 
-    @Override
+    private NewsContentFragmentAdapter adapter;
+    private List<String> names;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_activity);
-        listView = findViewById(R.id.news_lv);
+        initData();
 
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
 
-        refreshLayout = (RefreshLayout)findViewById(R.id.news_refreshLayout);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                index = 0;
-                SCNetworkTool.shared().normalEequest(SCNetworkPort.IndexNews, SCNetworkMethod.GET, null, new SCNetworkHandler() {
-                    @Override
-                    public void successHandle(String bodyStr) {
-                        Log.i(TAG, bodyStr);
-                        JSONObject response = JSONObject.parseObject(bodyStr);
-                        int code = (int)response.get("status");
-                        String info = response.get("msg").toString();
-                        JSONArray array = (JSONArray) response.get("data");
-                        List<NewsModel> newss = array.toJavaList(NewsModel.class);
-                        models = newss;
-                        adapter.notifyDataSetChanged();
-                        refreshlayout.finishRefresh(0);
-                    }
+        adapter = new NewsContentFragmentAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
 
-                    @Override
-                    public void errorHandle(Exception error) {
-                        Log.i(TAG, error.toString());
-                        Toast toast = Toast.makeText(NewsActivity.this, error.toString(), Toast.LENGTH_SHORT);
-                        toast.show();
-                        refreshlayout.finishRefresh(false);//传入false表示刷新失败
-                    }
-                });
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshlayout) {
-                // TODO: - 加载下一页
-                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
-            }
-        });
+        adapter.setList(names);
     }
 
-    private void refreshNews() {
-        SCNetworkTool.shared().normalEequest(SCNetworkPort.IndexNews, SCNetworkMethod.GET, null, new SCNetworkHandler() {
-            @Override
-            public void successHandle(String bodyStr) {
-                Log.i(TAG, bodyStr);
-                JSONObject response = JSONObject.parseObject(bodyStr);
-                int code = (int)response.get("status");
-                String info = response.get("msg").toString();
-                JSONArray array = (JSONArray) response.get("data");
-                List<NewsModel> newss = array.toJavaList(NewsModel.class);
-                models = newss;
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void errorHandle(Exception error) {
-                Log.i(TAG, error.toString());
-                Toast toast = Toast.makeText(NewsActivity.this, error.toString(), Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-    }
-
-    /**
-     * 点击事件 相当于 UITableView 中的 didSelect
-     * @param parent
-     * @param view
-     * @param position
-     * @param id
-     */
-    public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-        Log.i("indexPath.row", String.valueOf(position));
-        // FIXME: - 多次点击多次执行
-        // TODO: - 进入新闻详情
-        // 测试进入详细
-        Intent intent = new Intent(NewsActivity.this, NewsDetailActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * ListView 的 Adapter 相当于 UITableViewDataSource
-     */
-    private class NewsAdapter extends BaseAdapter {
-        @Override
-        public int getCount() {
-            return models.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = new NewsCell(NewsActivity.this);
-            }
-            // config view
-            NewsCell cell = (NewsCell)convertView;
-            NewsModel model = models.get(position);
-            cell.titleTv.setText(model.getTitle());
-            cell.detailTv.setText(model.getIntro());
-//            Glide.with(cell).load(model.img).into(cell.coverImg);
-            cell.sourceTv.setText(model.getSource());
-            // FIXME: - 时间需要做处理
-//            cell.timeTv.setText(model.getTime());
-            cell.readTv.setText("阅读量："+model.getReadnum());
-            cell.commentTv.setText("阅读量："+model.getCommentnum());
-            return cell;
-        }
+    private void initData() {
+        names = new ArrayList<>();
+        names.add("关注");
+        names.add("推荐");
+        names.add("热点");
+        names.add("视频");
+        names.add("小说");
+        names.add("娱乐");
+        names.add("问答");
+        names.add("图片");
+        names.add("科技");
+        names.add("懂车帝");
+        names.add("体育");
+        names.add("财经");
+        names.add("军事");
+        names.add("国际");
+        names.add("健康");
     }
 }
 
