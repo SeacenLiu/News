@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
@@ -39,7 +39,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:maxLines="3"
         android:textSize="18dp"
         android:text="这是一条评论。阿斯蒂芬是发生大否发生大否萨贝达放把水丢放假吧法第四ofhi噢阿萨德发的是偶发哈第四发发挥手动if好ifA栋萨凡纳独食难肥范德萨发那就服你反倒是哪方三房拉菲非农大事件发生你都就"/>
 

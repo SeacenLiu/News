@@ -30,7 +30,7 @@ public class ShareElemReturnChangePosition extends Transition {
                 path.moveTo(startX, startY);
 
 //                path.lineTo(endX, endY);
-                path.lineTo(endX+offSetX, endY+offSetY);
+                path.lineTo(endX+offSetX, endY-offSetY);
 
 //                float controlPointX = (startX + endX) / 3;
 //                float controlPointY = (startY + endY) / 2;

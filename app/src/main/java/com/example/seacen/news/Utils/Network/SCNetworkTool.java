@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -102,8 +103,13 @@ public class SCNetworkTool {
             okCoreRequeest(SCNetworkPort.IndexNews.path(), SCNetworkMethod.GET, null, handler);
             return;
         }
-        String urlStr = SCNetworkPort.root + "/" + name;
-        okCoreRequeest(urlStr, SCNetworkMethod.GET, null, handler);
+        try {
+            String encodeName = URLEncoder.encode(name, "utf-8");
+            String urlStr = SCNetworkPort.root + "/" + encodeName;
+            okCoreRequeest(urlStr, SCNetworkMethod.GET, null, handler);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -176,6 +182,7 @@ public class SCNetworkTool {
                         @Override
                         public void run() {
                             //已在主线程中，可以更新UI
+//                            if (response.header("Content-Type"))
                             handler.successHandle(body);
                         }
                     });

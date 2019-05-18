@@ -75,15 +75,22 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                     @Override
                     public void successHandle(String bodyStr) {
                         Log.i(TAG, bodyStr);
-                        // FIXME: - 不安全！！！
+                        // FIXME: - 不是JSON直接崩溃!!!
                         JSONObject response = JSONObject.parseObject(bodyStr);
                         int code = (int)response.get("status");
-                        String info = response.get("msg").toString();
-                        JSONArray array = (JSONArray) response.get("data");
-                        List<NewsModel> newss = array.toJavaList(NewsModel.class);
-                        models = newss;
-                        adapter.notifyDataSetChanged();
-                        refreshlayout.finishRefresh(0);
+                        if (code == 200) {
+                            String info = response.get("msg").toString();
+                            JSONArray array = (JSONArray) response.get("data");
+                            List<NewsModel> newss = array.toJavaList(NewsModel.class);
+                            models = newss;
+                            adapter.notifyDataSetChanged();
+                            refreshlayout.finishRefresh(0);
+                        } else {
+                            Toast toast = Toast.makeText(getActivity(), "服务器错误", Toast.LENGTH_SHORT);
+                            toast.show();
+                            refreshlayout.finishRefresh(false);
+                        }
+
                     }
 
                     @Override
