@@ -26,7 +26,9 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +43,8 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
     RefreshLayout refreshLayout;
     List<NewsModel> models = new ArrayList<>();
     NewsContentFragment.NewsAdapter adapter = new NewsContentFragment.NewsAdapter();
-    private int index = 0;
+    private Integer page = 1;
+    private Integer size = 20;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,8 +75,19 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                index = 0;
-                SCNetworkTool.shared().loadClassifyNews(name, new SCNetworkHandler() {
+                page = 1;
+                SCNetworkPort port;
+                Map<String, Object> params = new HashMap<>();
+                params.put("page", page);
+                params.put("size", size);
+                if (name.equals("要闻")) {
+                    // 要闻 就是首页
+                    port = SCNetworkPort.IndexNews;
+                } else {
+                    port = SCNetworkPort.Classify;
+                    params.put("classify", name);
+                }
+                SCNetworkTool.shared().normalEequest(port, SCNetworkMethod.GET, params, new SCNetworkHandler() {
                     @Override
                     public void successHandle(String bodyStr) {
                         Log.i(TAG, bodyStr);
@@ -82,7 +96,8 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                         int code = (int)response.get("status");
                         if (code == 200) {
                             String info = response.get("msg").toString();
-                            JSONArray array = (JSONArray) response.get("data");
+                            JSONObject data = (JSONObject) response.get("data");
+                            JSONArray array = (JSONArray) data.get("content");
                             List<NewsModel> newss = array.toJavaList(NewsModel.class);
                             models = newss;
                             adapter.notifyDataSetChanged();
@@ -92,7 +107,6 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                             toast.show();
                             refreshlayout.finishRefresh(false);
                         }
-
                     }
 
                     @Override
@@ -109,7 +123,52 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 // TODO: - 加载下一页
-                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+                page += 1;
+                SCNetworkPort port;
+                Map<String, Object> params = new HashMap<>();
+                params.put("page", page);
+                params.put("size", size);
+                if (name.equals("要闻")) {
+                    // 要闻 就是首页
+                    port = SCNetworkPort.IndexNews;
+                } else {
+                    port = SCNetworkPort.Classify;
+                    params.put("classify", name);
+                }
+                SCNetworkTool.shared().normalEequest(port, SCNetworkMethod.GET, params, new SCNetworkHandler() {
+                    @Override
+                    public void successHandle(String bodyStr) {
+                        Log.i(TAG, bodyStr);
+                        // FIXME: - 不是JSON直接崩溃!!!
+                        JSONObject response = JSONObject.parseObject(bodyStr);
+                        int code = (int)response.get("status");
+                        if (code == 200) {
+                            String info = response.get("msg").toString();
+                            JSONObject data = (JSONObject) response.get("data");
+                            JSONArray array = (JSONArray) data.get("content");
+                            List<NewsModel> newss = array.toJavaList(NewsModel.class);
+                            if (newss.isEmpty()) {
+                                refreshlayout.finishRefreshWithNoMoreData();
+                            } else {
+                                models = newss;
+                                adapter.notifyDataSetChanged();
+                                refreshlayout.finishRefresh(0);
+                            }
+                        } else {
+                            Toast toast = Toast.makeText(getActivity(), "服务器错误", Toast.LENGTH_SHORT);
+                            toast.show();
+                            refreshlayout.finishRefresh(false);
+                        }
+                    }
+
+                    @Override
+                    public void errorHandle(Exception error) {
+                        Log.i(TAG, error.toString());
+                        Toast toast = Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT);
+                        toast.show();
+                        refreshlayout.finishRefresh(false);//传入false表示刷新失败
+                    }
+                });
             }
         });
     }

@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.login_activity_login_btn)
     void loginClick() {
         // TODO: -  登录操作
-        Map<String, String> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", userEt.getText().toString());
         params.put("passwd", passwordEt.getText().toString());
         SCNetworkTool.shared().normalEequest(SCNetworkPort.Login, SCNetworkMethod.POST, params, new SCNetworkHandler() {

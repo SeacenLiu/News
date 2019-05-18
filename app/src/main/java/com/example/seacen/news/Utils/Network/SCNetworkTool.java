@@ -119,7 +119,7 @@ public class SCNetworkTool {
      * @param params
      * @param handler
      */
-    public void normalEequest(SCNetworkPort port, SCNetworkMethod method, Map<String, String> params, SCNetworkHandler handler) {
+    public void normalEequest(SCNetworkPort port, SCNetworkMethod method, Map<String, Object> params, SCNetworkHandler handler) {
         okCoreRequeest(port.path(), method, params, handler);
     }
 
@@ -131,7 +131,7 @@ public class SCNetworkTool {
      * @param params
      * @param handler
      */
-    public void okCoreRequeest(String urlstr, SCNetworkMethod method, Map<String, String> params, final SCNetworkHandler handler) {
+    public void okCoreRequeest(String urlstr, SCNetworkMethod method, Map<String, Object> params, final SCNetworkHandler handler) {
         if (client == null) {
             client = genericClient();
         }
@@ -204,13 +204,13 @@ public class SCNetworkTool {
      * @return 拼接好的URL
      * @throws MalformedURLException
      */
-    private URL jointGetURL(URL url, Map<String, String> params) throws MalformedURLException {
+    private URL jointGetURL(URL url, Map<String, Object> params) throws MalformedURLException {
         if (params == null || params.isEmpty())
             return url;
         StringBuffer buffer = new StringBuffer(url.toString());
         boolean isFirst = true;
         buffer.append("?");
-        for (Map.Entry<String, String> entry : params.entrySet()) {
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
             buffer.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
         }
         //删除最后的一个"&"
@@ -219,7 +219,7 @@ public class SCNetworkTool {
         return res;
     }
 
-    private URL jointGetURL(String urlstr, Map<String, String> params) throws MalformedURLException {
+    private URL jointGetURL(String urlstr, Map<String, Object> params) throws MalformedURLException {
         URL url = new URL(urlstr);
         return jointGetURL(url, params);
     }

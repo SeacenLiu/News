@@ -54,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         // TODO: - 注册操作
-        Map<String, String> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", userEt.getText().toString());
         params.put("passwd", passwordEt.getText().toString());
         SCNetworkTool.shared().normalEequest(SCNetworkPort.Register, SCNetworkMethod.POST, params, new SCNetworkHandler() {
