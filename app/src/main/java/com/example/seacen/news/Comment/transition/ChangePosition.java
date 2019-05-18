@@ -18,20 +18,22 @@ public class ChangePosition extends Transition {
 
     private static final String PROPNAME_POSITION = "custom_position:change_position:position";
 
-
-    public ChangePosition() {
-        // 这里通过曲线的方式 来改变位置
+    /**
+     * 构造函数
+     */
+    public ChangePosition() { // 这里通过曲线的方式 来改变位置
         setPathMotion(new PathMotion() {
             @Override
             public Path getPath(float startX, float startY, float endX, float endY) {
                 Path path = new Path();
                 path.moveTo(startX, startY);
 
-                float controlPointX = (startX + endX) / 3;
-                float controlPointY = (startY + endY) / 2;
+                path.lineTo(endX, endY);
 
-                // 这里是一条贝塞尔曲线的路线, (controlPointX, controlPointY) 表示控制点
-                path.quadTo(controlPointX, controlPointY, endX, endY);
+//                float controlPointX = (startX + endX) / 3;
+//                float controlPointY = (startY + endY) / 2;
+//
+//                path.quadTo(controlPointX, controlPointY, endX, endY);
                 return path;
             }
         });
@@ -45,12 +47,19 @@ public class ChangePosition extends Transition {
         values.values.put(PROPNAME_POSITION, rect);
     }
 
-
+    /**
+     * 获取上一个界面的数值
+     * @param transitionValues
+     */
     @Override
     public void captureStartValues(TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
+    /**
+     * 获取即将显示的界面数值
+     * @param transitionValues
+     */
     @Override
     public void captureEndValues(TransitionValues transitionValues) {
         captureValues(transitionValues);
@@ -71,10 +80,15 @@ public class ChangePosition extends Transition {
 
             assert startRect != null;
             assert endRect != null;
-            Path changePosPath = getPathMotion().getPath(startRect.centerX(), startRect.centerY(), endRect.centerX(), endRect.centerY());
+
+            int sx = startRect.centerX();
+            int sy = startRect.centerY();
+            int ex = endRect.centerX();
+            int ey = endRect.centerY();
+
+            Path changePosPath = getPathMotion().getPath(sx, sy, ex, ey);
 
 //            int radius = startRect.centerY() - endRect.centerY();
-
             ObjectAnimator objectAnimator = ObjectAnimator.ofObject(view, new PropPosition(PointF.class, "position", new PointF(endRect.centerX(), endRect.centerY())), null, changePosPath);
             objectAnimator.setInterpolator(new FastOutSlowInInterpolator());
 
@@ -109,7 +123,6 @@ public class ChangePosition extends Transition {
             int transY = y - startY;
             int transX = x - startX;
 
-            // 这里控制 View 移动
             view.setTranslationX(transX);
             view.setTranslationY(transY);
         }

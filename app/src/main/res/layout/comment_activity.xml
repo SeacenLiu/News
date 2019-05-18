@@ -7,16 +7,16 @@
     android:layout_height="match_parent"
     >
 
-    <TextView
-        android:id="@+id/comment_activity_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/top_bar_height"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:text="评论"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        />
+    <!--<TextView-->
+        <!--android:id="@+id/comment_activity_top_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/top_bar_height"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:gravity="center"-->
+        <!--android:text="评论"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="20dp"-->
+        <!--/>-->
 
     <RelativeLayout
         android:id="@+id/comment_activity_bottom_send_bar"
@@ -69,12 +69,12 @@
     </RelativeLayout>
 
 
+    <!--android:layout_below="@id/comment_activity_top_bar"-->
     <FrameLayout
         android:id="@+id/comment_activity_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/comment_activity_bottom_send_bar"
-        android:layout_below="@id/comment_activity_top_bar"
         android:transitionName="comment"
         >
 

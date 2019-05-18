@@ -1,6 +1,7 @@
 package com.example.seacen.news.Comment;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.ActionBar;
@@ -26,7 +27,7 @@ import com.example.seacen.news.R;
 public class CommentActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "CommentActivity";
 
-    View topBar;
+//    View topBar;
     View bottomSendBar;
     View commentContent;
     ListView listView;
@@ -35,7 +36,7 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_activity);
-        topBar = findViewById(R.id.comment_activity_top_bar);
+//        topBar = findViewById(R.id.comment_activity_top_bar);
         commentContent = findViewById(R.id.comment_activity_content);
         bottomSendBar = findViewById(R.id.comment_activity_bottom_send_bar);
         listView = findViewById(R.id.comment_activity_body_lv);
@@ -79,12 +80,12 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("评论区");
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.hide();
+//        actionBar.hide();
     }
 
     private void setTransition() {
         // 底部输入框的进入动画
-        getWindow().setEnterTransition(new CommentEnterTransition(this, topBar, bottomSendBar));
+//        getWindow().setEnterTransition(new CommentEnterTransition(this, topBar, bottomSendBar));
         // 入场动画
         getWindow().setSharedElementEnterTransition(buildShareElemEnterSet());
         // 退场动画
@@ -98,21 +99,24 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
     private TransitionSet buildShareElemEnterSet() {
         TransitionSet transitionSet = new TransitionSet();
 
+        Transition revealTransition = new ShareElemEnterRevealTransition(commentContent);
+        transitionSet.addTransition(revealTransition);
+        revealTransition.addTarget(R.id.comment_activity_content);
+//        revealTransition.addTarget(R.id.comment_activity_all_v);
+        revealTransition.setInterpolator(new FastOutSlowInInterpolator());
+        revealTransition.setDuration(300);
+//        transitionSet.setDuration(2000);
+
         Transition changePos = new ChangePosition();
         changePos.setDuration(300);
         changePos.addTarget(R.id.comment_activity_content);
         transitionSet.addTransition(changePos);
-
-        Transition revealTransition = new ShareElemEnterRevealTransition(commentContent);
-        transitionSet.addTransition(revealTransition);
-        revealTransition.addTarget(R.id.comment_activity_content);
-        revealTransition.setInterpolator(new FastOutSlowInInterpolator());
-        revealTransition.setDuration(300);
-
+//
         ChangeColor changeColor = new ChangeColor(getResources().getColor(R.color.black_85_alpha), getResources().getColor(R.color.white));
         changeColor.addTarget(R.id.comment_activity_content);
         changeColor.setDuration(350);
         transitionSet.addTransition(changeColor);
+
         transitionSet.setDuration(900);
 
         return transitionSet;
@@ -125,17 +129,23 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
     private TransitionSet buildShareElemReturnSet() {
         TransitionSet transitionSet = new TransitionSet();
 
-        Transition changePos = new ShareElemReturnChangePosition();
-        changePos.addTarget(R.id.comment_activity_content);
-        transitionSet.addTransition(changePos);
-
-        ChangeColor changeColor = new ChangeColor(getResources().getColor(R.color.white), getResources().getColor(R.color.black_85_alpha));
-        changeColor.addTarget(R.id.comment_activity_content);
-        transitionSet.addTransition(changeColor);
-
         Transition revealTransition = new ShareElemReturnRevealTransition(commentContent);
         revealTransition.addTarget(R.id.comment_activity_content);
+//        revealTransition.addTarget(R.id.comment_activity_all_v);
+        revealTransition.setDuration(300);
         transitionSet.addTransition(revealTransition);
+//        transitionSet.setDuration(2000);
+
+        Transition changePos = new ShareElemReturnChangePosition(1, -211);
+        changePos.setDuration(300);
+        changePos.addTarget(R.id.comment_activity_content);
+        transitionSet.addTransition(changePos);
+//
+        ChangeColor changeColor = new ChangeColor(getResources().getColor(R.color.white), getResources().getColor(R.color.black_85_alpha));
+        changeColor.addTarget(R.id.comment_activity_content);
+        changeColor.setDuration(350);
+        transitionSet.addTransition(changeColor);
+
         transitionSet.setDuration(900);
 
         return transitionSet;

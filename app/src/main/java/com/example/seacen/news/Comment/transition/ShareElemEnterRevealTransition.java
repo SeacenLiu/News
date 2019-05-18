@@ -18,15 +18,27 @@ public class ShareElemEnterRevealTransition extends Transition {
 
     private View animView;
 
+    /**
+     * 构造函数
+     * @param animView
+     */
     public ShareElemEnterRevealTransition(View animView) {
         this.animView = animView;
     }
 
+    /**
+     * 用于获取到上一个页面对应的 View 的属性值
+     * @param transitionValues
+     */
     @Override
     public void captureStartValues(TransitionValues transitionValues) {
         transitionValues.values.put(PROPNAME_RADIUS, transitionValues.view.getWidth() / 2);
     }
 
+    /**
+     * 用于获取到即将打开页面对应的 View 的属性值
+     * @param transitionValues
+     */
     @Override
     public void captureEndValues(TransitionValues transitionValues) {
         View view = transitionValues.view;
@@ -36,6 +48,13 @@ public class ShareElemEnterRevealTransition extends Transition {
         transitionValues.values.put(PROPNAME_RADIUS, radius);
     }
 
+    /**
+     * 创建动画
+     * @param sceneRoot
+     * @param startValues
+     * @param endValues
+     * @return
+     */
     @Override
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues, TransitionValues endValues) {
 
