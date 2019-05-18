@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.seacen.news.News.NewsActivity;
 import com.example.seacen.news.R;
 import com.example.seacen.news.Utils.Network.*;
@@ -57,12 +58,11 @@ public class LoginActivity extends AppCompatActivity {
         Map<String, Object> params = new HashMap<>();
         params.put("name", userEt.getText().toString());
         params.put("passwd", passwordEt.getText().toString());
-        SCNetworkTool.shared().normalEequest(SCNetworkPort.Login, SCNetworkMethod.POST, params, new SCNetworkHandler() {
+        SCNetworkTool.shared().normalRequest(SCNetworkPort.Login, SCNetworkMethod.POST, params, new SCNetworkHandler() {
             @Override
-            public void successHandle(String bodyStr) {
-                Log.i(TAG, bodyStr);
+            public void successHandle(JSONObject jsonObject) {
                 TextView textView = findViewById(R.id.login_activity_test_tv);
-                textView.setText(bodyStr);
+                textView.setText(jsonObject.toString());
             }
 
             @Override

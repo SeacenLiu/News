@@ -1,6 +1,7 @@
 package com.example.seacen.news.Utils.Network;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public class SCJsonResponse<T> {
     int status;

@@ -1,11 +1,9 @@
 package com.example.seacen.news.Account;
 
-import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -57,10 +55,10 @@ public class RegisterActivity extends AppCompatActivity {
         Map<String, Object> params = new HashMap<>();
         params.put("name", userEt.getText().toString());
         params.put("passwd", passwordEt.getText().toString());
-        SCNetworkTool.shared().normalEequest(SCNetworkPort.Register, SCNetworkMethod.POST, params, new SCNetworkHandler() {
+        SCNetworkTool.shared().normalRequest(SCNetworkPort.Register, SCNetworkMethod.POST, params, new SCNetworkHandler() {
             @Override
-            public void successHandle(String bodyStr) {
-                Toast toast = Toast.makeText(RegisterActivity.this, bodyStr, Toast.LENGTH_SHORT);
+            public void successHandle(com.alibaba.fastjson.JSONObject jsonObject) {
+                Toast toast = Toast.makeText(RegisterActivity.this, jsonObject.toJSONString(), Toast.LENGTH_SHORT);
                 toast.show();
             }
 

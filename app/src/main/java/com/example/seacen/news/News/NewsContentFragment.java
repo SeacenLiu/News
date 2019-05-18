@@ -87,16 +87,13 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                     port = SCNetworkPort.Classify;
                     params.put("classify", name);
                 }
-                SCNetworkTool.shared().normalEequest(port, SCNetworkMethod.GET, params, new SCNetworkHandler() {
+                SCNetworkTool.shared().normalRequest(port, SCNetworkMethod.GET, params, new SCNetworkHandler() {
                     @Override
-                    public void successHandle(String bodyStr) {
-                        Log.i(TAG, bodyStr);
-                        // FIXME: - 不是JSON直接崩溃!!!
-                        JSONObject response = JSONObject.parseObject(bodyStr);
-                        int code = (int)response.get("status");
+                    public void successHandle(JSONObject jsonObject) {
+                        int code = (int)jsonObject.get("status");
                         if (code == 200) {
-                            String info = response.get("msg").toString();
-                            JSONObject data = (JSONObject) response.get("data");
+                            String info = jsonObject.get("msg").toString();
+                            JSONObject data = (JSONObject) jsonObject.get("data");
                             JSONArray array = (JSONArray) data.get("content");
                             List<NewsModel> newss = array.toJavaList(NewsModel.class);
                             models = newss;
@@ -135,17 +132,14 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                     port = SCNetworkPort.Classify;
                     params.put("classify", name);
                 }
-                SCNetworkTool.shared().normalEequest(port, SCNetworkMethod.GET, params, new SCNetworkHandler() {
+                SCNetworkTool.shared().normalRequest(port, SCNetworkMethod.GET, params, new SCNetworkHandler() {
                     @Override
-                    public void successHandle(String bodyStr) {
-                        Log.i(TAG, bodyStr);
-                        // FIXME: - 不是JSON直接崩溃!!!
-                        JSONObject response = JSONObject.parseObject(bodyStr);
-                        int code = (int)response.get("status");
+                    public void successHandle(JSONObject jsonObject) {
+                        int code = (int)jsonObject.get("status");
                         if (code == 200) {
-                            String info = response.get("msg").toString();
-                            JSONObject data = (JSONObject) response.get("data");
-                            JSONArray array = (JSONArray) data.get("content");
+                            String info = jsonObject.getString("msg");
+                            JSONObject data = (JSONObject) jsonObject.get("data");
+                            JSONArray array = data.getJSONArray("content");
                             List<NewsModel> newss = array.toJavaList(NewsModel.class);
                             if (newss.isEmpty()) {
                                 refreshlayout.finishLoadMoreWithNoMoreData();
@@ -171,30 +165,6 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                         refreshlayout.finishRefresh(false);//传入false表示刷新失败
                     }
                 });
-            }
-        });
-    }
-
-    // 这个是加载首页的！！！
-    private void refreshNews() {
-        SCNetworkTool.shared().normalEequest(SCNetworkPort.IndexNews, SCNetworkMethod.GET, null, new SCNetworkHandler() {
-            @Override
-            public void successHandle(String bodyStr) {
-                Log.i(TAG, bodyStr);
-                JSONObject response = JSONObject.parseObject(bodyStr);
-                int code = (int)response.get("status");
-                String info = response.get("msg").toString();
-                JSONArray array = (JSONArray) response.get("data");
-                List<NewsModel> newss = array.toJavaList(NewsModel.class);
-                models = newss;
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void errorHandle(Exception error) {
-                Log.i(TAG, error.toString());
-                Toast toast = Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT);
-                toast.show();
             }
         });
     }

@@ -14,6 +14,15 @@ public enum SCNetworkPort {
         this.subpath = s;
     }
 
+    public void addSuffix(Integer integer) {
+        addSuffix(String.valueOf(integer));
+    }
+
+    public void addSuffix(String suffix) {
+        this.subpath += "/";
+        this.subpath += suffix;
+    }
+
     public String path() {
         return root + subpath;
     }

@@ -11,21 +11,15 @@ import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.seacen.news.Comment.CommentActivity;
 import com.example.seacen.news.R;
-import com.example.seacen.news.Utils.Network.SCJsonResponse;
 import com.example.seacen.news.Utils.Network.SCNetworkHandler;
 import com.example.seacen.news.Utils.Network.SCNetworkMethod;
 import com.example.seacen.news.Utils.Network.SCNetworkPort;
 import com.example.seacen.news.Utils.Network.SCNetworkTool;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,17 +50,17 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         setupNavigation();
         setupWebView();
-        String path = SCNetworkPort.NewsDetail.path();
-        path += "/";
-        path += String.valueOf(newsModel.getId());
-        SCNetworkTool.shared().okCoreRequeest(path, SCNetworkMethod.GET, null, new SCNetworkHandler() {
+
+        // 请求详细
+        SCNetworkPort port = SCNetworkPort.NewsDetail;
+        port.addSuffix(newsModel.getId());
+        SCNetworkTool.shared().normalRequest(port, SCNetworkMethod.GET, null, new SCNetworkHandler() {
             @Override
-            public void successHandle(String bodyStr) {
-                JSONObject response = JSONObject.parseObject(bodyStr);
-                Integer code = response.getInteger("status");
-                String msg = response.getString("msg");
-                JSONObject jsonObject = response.getJSONObject("data");
-                NewsModel model = jsonObject.toJavaObject(NewsModel.class);
+            public void successHandle(JSONObject jsonObject) {
+                Integer code = jsonObject.getInteger("status");
+                String msg = jsonObject.getString("msg");
+                JSONObject data = jsonObject.getJSONObject("data");
+                NewsModel model = data.toJavaObject(NewsModel.class);
                 String htmlString = model.getContent();
                 htmlString = addHeadContent(htmlString, "https:");
 

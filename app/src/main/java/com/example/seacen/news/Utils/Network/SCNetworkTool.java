@@ -3,17 +3,11 @@ package com.example.seacen.news.Utils.Network;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
-import android.util.Log;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -100,13 +94,13 @@ public class SCNetworkTool {
 
     public void loadClassifyNews(String name, SCNetworkHandler handler) {
         if (name.equals("要闻")) {
-            okCoreRequeest(SCNetworkPort.IndexNews.path(), SCNetworkMethod.GET, null, handler);
+            okCoreRequest(SCNetworkPort.IndexNews.path(), SCNetworkMethod.GET, null, handler);
             return;
         }
         try {
             String encodeName = URLEncoder.encode(name, "utf-8");
             String urlStr = SCNetworkPort.root + "/" + encodeName;
-            okCoreRequeest(urlStr, SCNetworkMethod.GET, null, handler);
+            okCoreRequest(urlStr, SCNetworkMethod.GET, null, handler);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -119,8 +113,8 @@ public class SCNetworkTool {
      * @param params
      * @param handler
      */
-    public void normalEequest(SCNetworkPort port, SCNetworkMethod method, Map<String, Object> params, SCNetworkHandler handler) {
-        okCoreRequeest(port.path(), method, params, handler);
+    public void normalRequest(SCNetworkPort port, SCNetworkMethod method, Map<String, Object> params, SCNetworkHandler handler) {
+        okCoreRequest(port.path(), method, params, handler);
     }
 
     /**
@@ -131,7 +125,7 @@ public class SCNetworkTool {
      * @param params
      * @param handler
      */
-    public void okCoreRequeest(String urlstr, SCNetworkMethod method, Map<String, Object> params, final SCNetworkHandler handler) {
+    public void okCoreRequest(String urlstr, SCNetworkMethod method, Map<String, Object> params, final SCNetworkHandler handler) {
         if (client == null) {
             client = genericClient();
         }
@@ -162,38 +156,48 @@ public class SCNetworkTool {
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Log.d(TAG, "onFailure: ");
-                    Handler mainHandler = new Handler(Looper.getMainLooper());
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //已在主线程中，可以更新UI
-                            handler.errorHandle(e);
-                        }
-                    });
+//                    Log.d(TAG, "onFailure: ");
+                    mainThreadCallBack(null, e, handler);
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
 //                    Log.d(TAG, "onResponse: " + response.body().string());
+                    if (!response.header("Content-Type").equals("application/json;charset=UTF-8")) {
+                        // 后台不返回 JSON 视为错误
+                        Exception exception = new Exception("后台返回格式错误");
+                        mainThreadCallBack(null, exception, handler);
+                        return;
+                    }
                     String body = response.body().string();
-                    Handler mainHandler = new Handler(Looper.getMainLooper());
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //已在主线程中，可以更新UI
-//                            if (response.header("Content-Type"))
-                            handler.successHandle(body);
-                        }
-                    });
+                    // fastJSON 转换
+                    JSONObject jsonObject = JSONObject.parseObject(body);
+                    // 返回主线程回调
+                    mainThreadCallBack(jsonObject, null, handler);
                 }
             });
         } catch (IOException e) {
             e.printStackTrace();
-            handler.errorHandle(e);
+            mainThreadCallBack(null, e, handler);
             return;
         }
 
+    }
+
+    private void mainThreadCallBack(JSONObject jsonObject, Exception exception, SCNetworkHandler handler) {
+        // 返回主线程回调
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                //已在主线程中，可以更新UI
+                if (jsonObject != null) {
+                    handler.successHandle(jsonObject);
+                } else if (exception != null) {
+                    handler.errorHandle(exception);
+                }
+            }
+        });
     }
 
     /**
