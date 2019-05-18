@@ -4,7 +4,7 @@ public enum SCNetworkPort {
     Register("/news/register"),
     Login("/news/login"),
     IndexNews("/news/indexnew"),
-    NewsDetail("/news/getdetailbyname"),
+    NewsDetail("/news/detail"),
     Classify("/news/classify");
 
     static String root = "http://47.106.248.255:8080";

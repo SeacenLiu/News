@@ -1,8 +1,9 @@
 package com.example.seacen.news.News;
+import java.io.Serializable;
 
-public class NewsModel {
+public class NewsModel implements Serializable {
     // id
-    int id;
+    Integer id;
     // 分类
     String classify;
     // 来源
@@ -18,9 +19,9 @@ public class NewsModel {
     // 时间
     String time;
     // 阅读数
-    int readnum;
+    Integer readnum;
     // 评论数
-    int commentnum;
+    Integer commentnum;
 
     public int getId() {
         return id;

@@ -44,7 +44,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
     List<NewsModel> models = new ArrayList<>();
     NewsContentFragment.NewsAdapter adapter = new NewsContentFragment.NewsAdapter();
     private Integer page = 1;
-    private Integer size = 20;
+    private Integer size = 1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,11 +148,13 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                             JSONArray array = (JSONArray) data.get("content");
                             List<NewsModel> newss = array.toJavaList(NewsModel.class);
                             if (newss.isEmpty()) {
-                                refreshlayout.finishRefreshWithNoMoreData();
+                                refreshlayout.finishLoadMoreWithNoMoreData();
                             } else {
-                                models = newss;
+                                for (NewsModel model: newss) {
+                                    models.add(model);
+                                }
                                 adapter.notifyDataSetChanged();
-                                refreshlayout.finishRefresh(0);
+                                refreshlayout.finishLoadMore();
                             }
                         } else {
                             Toast toast = Toast.makeText(getActivity(), "服务器错误", Toast.LENGTH_SHORT);
@@ -210,6 +212,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
         // TODO: - 进入新闻详情
         // 测试进入详细
         Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+        intent.putExtra("news_model", models.get(position));
         startActivity(intent);
     }
 
