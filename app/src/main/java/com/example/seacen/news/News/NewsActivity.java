@@ -14,10 +14,15 @@ import com.example.seacen.news.Utils.Network.SCNetworkTool;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NewsActivity extends AppCompatActivity {
     static String TAG = "NewsActivity";
 
+    @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+    @BindView(R.id.view_pager)
     ViewPager viewPager;
 
     private NewsContentFragmentAdapter adapter;
@@ -26,9 +31,7 @@ public class NewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_activity);
-
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.view_pager);
+        ButterKnife.bind(this);
 
         adapter = new NewsContentFragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);

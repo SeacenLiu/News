@@ -24,20 +24,24 @@ import com.example.seacen.news.Comment.transition.ShareElemReturnChangePosition;
 import com.example.seacen.news.Comment.transition.ShareElemReturnRevealTransition;
 import com.example.seacen.news.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CommentActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "CommentActivity";
 
+    @BindView(R.id.comment_activity_bottom_send_bar)
     View bottomSendBar;
+    @BindView(R.id.comment_activity_content)
     View commentContent;
+    @BindView(R.id.comment_activity_body_lv)
     ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_activity);
-        commentContent = findViewById(R.id.comment_activity_content);
-        bottomSendBar = findViewById(R.id.comment_activity_bottom_send_bar);
-        listView = findViewById(R.id.comment_activity_body_lv);
+        ButterKnife.bind(this);
         listView.setAdapter(new CommentAdapter());
         listView.setOnItemClickListener(this);
 

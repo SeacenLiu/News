@@ -1,5 +1,6 @@
 package com.example.seacen.news.Account;
 
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,47 +19,57 @@ import com.example.seacen.news.Utils.Network.SCNetworkTool;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
     static String TAG = "RegisterActivity";
 
-    EditText userEt, passwordEt, passwordAgEt;
+    @BindView(R.id.register_activity_username_Et)
+    EditText userEt;
+    @BindView(R.id.register_activity_password_Et)
+    EditText passwordEt;
+    @BindView(R.id.register_activity_passwordAg_Et)
+    EditText passwordAgEt;
+    @BindView(R.id.register_activity_register_btn)
     Button registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
-        userEt = findViewById(R.id.register_activity_username_Et);
-        passwordEt = findViewById(R.id.register_activity_password_Et);
-        passwordAgEt = findViewById(R.id.register_activity_passwordAg_Et);
-        registerBtn = findViewById(R.id.register_activity_register_btn);
+        ButterKnife.bind(this);
+        setupNavigationBar();
+    }
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+    @OnClick(R.id.register_activity_register_btn)
+    void registerClick() {
+        // 判断是否合法
+        if (!passwordEt.getText().toString().equals(passwordAgEt.getText().toString())) {
+            Toast toast = Toast.makeText(RegisterActivity.this, "两次密码不同", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        // TODO: - 注册操作
+        Map<String, String> params = new HashMap<>();
+        params.put("name", userEt.getText().toString());
+        params.put("passwd", passwordEt.getText().toString());
+        SCNetworkTool.shared().normalEequest(SCNetworkPort.Register, SCNetworkMethod.POST, params, new SCNetworkHandler() {
             @Override
-            public void onClick(View v) {
-                // TODO: - 注册操作
-                Map<String, String> params = new HashMap<>();
-                params.put("name", userEt.getText().toString());
-                params.put("passwd", passwordEt.getText().toString());
-                SCNetworkTool.shared().normalEequest(SCNetworkPort.Register, SCNetworkMethod.POST, params, new SCNetworkHandler() {
-                    @Override
-                    public void successHandle(String bodyStr) {
-                        Toast toast = Toast.makeText(RegisterActivity.this, bodyStr, Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
+            public void successHandle(String bodyStr) {
+                Toast toast = Toast.makeText(RegisterActivity.this, bodyStr, Toast.LENGTH_SHORT);
+                toast.show();
+            }
 
-                    @Override
-                    public void errorHandle(Exception error) {
-                        Toast toast = Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                });
+            @Override
+            public void errorHandle(Exception error) {
+                Toast toast = Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
-
-        setupNavigationBar();
     }
 
     void setupNavigationBar() {

@@ -4,17 +4,32 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.seacen.news.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NewsCell extends LinearLayout {
 
+    @BindView(R.id.cell_news_cover_iv)
     public ImageView coverImg;
-    public TextView titleTv, detailTv;
-    public TextView sourceTv, timeTv, readTv, commentTv;
+    @BindView(R.id.cell_news_title_tv)
+    public TextView titleTv;
+    @BindView(R.id.cell_news_detail_tv)
+    public TextView detailTv;
+    @BindView(R.id.cell_news_source_tv)
+    public TextView sourceTv;
+    @BindView(R.id.cell_news_time_tv)
+    public TextView timeTv;
+    @BindView(R.id.cell_news_read_tv)
+    public TextView readTv;
+    @BindView(R.id.cell_news_comment_tv)
+    public TextView commentTv;
 
     /**
      * 在java代码里new的时候会用到
@@ -47,15 +62,8 @@ public class NewsCell extends LinearLayout {
 
     private void setupUI(Context context) {
         //加载布局文件，与setContentView()效果一样
-        LayoutInflater.from(context).inflate(R.layout.cell_news, this);
-
-        coverImg = findViewById(R.id.cell_news_cover_iv);
-        titleTv = findViewById(R.id.cell_news_title_tv);
-        detailTv = findViewById(R.id.cell_news_detail_tv);
-        sourceTv = findViewById(R.id.cell_news_source_tv);
-        timeTv = findViewById(R.id.cell_news_time_tv);
-        readTv = findViewById(R.id.cell_news_read_tv);
-        commentTv = findViewById(R.id.cell_news_comment_tv);
+        View view = LayoutInflater.from(context).inflate(R.layout.cell_news, this);
+        ButterKnife.bind(this, view);
     }
 
 }

@@ -35,11 +35,25 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:textSize="18dp"
         android:text="这是一条评论。阿斯蒂芬是发生大否发生大否萨贝达放把水丢放假吧法第四ofhi噢阿萨德发的是偶发哈第四发发挥手动if好ifA栋萨凡纳独食难肥范德萨发那就服你反倒是哪方三房拉菲非农大事件发生你都就"/>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:id="@+id/cell_comment_like"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="点赞：10"/>
+    </LinearLayout>
 
 </LinearLayout>

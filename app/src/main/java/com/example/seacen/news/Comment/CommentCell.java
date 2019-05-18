@@ -4,11 +4,26 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.seacen.news.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CommentCell extends LinearLayout {
+
+    @BindView(R.id.cell_comment_username_tv)
+    TextView username;
+    @BindView(R.id.cell_comment_build_tv)
+    TextView build;
+    @BindView(R.id.cell_comment_content_tv)
+    TextView content;
+    @BindView(R.id.cell_comment_like)
+    TextView like;
+
     /**
      * 在java代码里new的时候会用到
      * @param context
@@ -40,9 +55,8 @@ public class CommentCell extends LinearLayout {
 
     private void setupUI(Context context) {
         //加载布局文件，与setContentView()效果一样
-        LayoutInflater.from(context).inflate(R.layout.cell_comment, this);
-
-
+        View view = LayoutInflater.from(context).inflate(R.layout.cell_comment, this);
+        ButterKnife.bind(view, this);
     }
 
 }

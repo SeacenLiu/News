@@ -28,11 +28,16 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NewsContentFragment extends Fragment implements AdapterView.OnItemClickListener {
     static String TAG = "NewsContentFragment";
 
     private String name;
+    @BindView(R.id.news_lv)
     ListView listView;
+    @BindView(R.id.news_refreshLayout)
     RefreshLayout refreshLayout;
     List<NewsModel> models = new ArrayList<>();
     NewsContentFragment.NewsAdapter adapter = new NewsContentFragment.NewsAdapter();
@@ -53,6 +58,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_content_fragment, container, false);
+        ButterKnife.bind(this, view);
 
         // 初始化
         setup(view);
@@ -61,12 +67,8 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
     }
 
     private void setup(View view) {
-        listView = view.findViewById(R.id.news_lv);
-
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
-
-        refreshLayout = (RefreshLayout)view.findViewById(R.id.news_refreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {

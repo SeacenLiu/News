@@ -16,29 +16,32 @@ import android.widget.ImageView;
 import com.example.seacen.news.Comment.CommentActivity;
 import com.example.seacen.news.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class NewsDetailActivity extends AppCompatActivity {
 
+    @BindView(R.id.news_detail_activity_wb)
     WebView webView;
+    @BindView(R.id.news_detail_activity_comment_iv)
     View commentIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_detail_activity);
+        ButterKnife.bind(this);
 
-        webView = findViewById(R.id.news_detail_activity_wb);
         setupNavigation();
         setupWebView();
         webView.loadUrl("http://www.baidu.com");
+    }
 
-        commentIv = findViewById(R.id.news_detail_activity_comment_iv);
-        commentIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NewsDetailActivity.this, CommentActivity.class);
-                transitionTo(intent);
-            }
-        });
+    @OnClick(R.id.news_detail_activity_comment_iv)
+    void commentClick() {
+        Intent intent = new Intent(NewsDetailActivity.this, CommentActivity.class);
+        transitionTo(intent);
     }
 
     void transitionTo(Intent i) {
