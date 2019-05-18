@@ -56,7 +56,6 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         setupNavigation();
         setupWebView();
-//        webView.loadUrl("http://www.baidu.com");
         String path = SCNetworkPort.NewsDetail.path();
         path += "/";
         path += String.valueOf(newsModel.getId());
@@ -69,7 +68,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                 JSONObject jsonObject = response.getJSONObject("data");
                 NewsModel model = jsonObject.toJavaObject(NewsModel.class);
                 String htmlString = model.getContent();
-                htmlString = repairContent(htmlString, "https:", 500);
+                htmlString = addHeadContent(htmlString, "https:");
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("<HTML><HEAD><LINK href=\"webview.min.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>");
@@ -85,7 +84,13 @@ public class NewsDetailActivity extends AppCompatActivity {
         });
     }
 
-    String repairContent(String content,String replaceHttp,int size){
+    /**
+     * 为 src 添加URL头部
+     * @param content
+     * @param addHttp
+     * @return
+     */
+    String addHeadContent(String content,String addHttp){
         String patternStr="<img\\s*([^>]*)\\s*src=\\\"(.*?)\\\"\\s*([^>]*)>";
         Pattern pattern = Pattern.compile(patternStr,Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(content);
@@ -93,13 +98,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         while(matcher.find()) {
             String src = matcher.group(2);
             String replaceSrc = "";
-//            if(src.lastIndexOf(".")>0){
-//                replaceSrc = src.substring(0,src.lastIndexOf("."))+"_"+size+src.substring(src.lastIndexOf("."));
-//            }
-//            if(!src.startsWith("http://")&&!src.startsWith("https://")){
-//                replaceSrc = replaceHttp + replaceSrc;
-//            }
-            replaceSrc = replaceHttp + src;
+            replaceSrc = addHttp + src;
             result = result.replaceAll(src,replaceSrc);
         }
         return result;
