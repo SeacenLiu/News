@@ -26,6 +26,7 @@ import com.example.seacen.news.Comment.transition.CommentEnterTransition;
 import com.example.seacen.news.Comment.transition.ShareElemEnterRevealTransition;
 import com.example.seacen.news.Comment.transition.ShareElemReturnChangePosition;
 import com.example.seacen.news.Comment.transition.ShareElemReturnRevealTransition;
+import com.example.seacen.news.News.NewsModel;
 import com.example.seacen.news.R;
 import com.example.seacen.news.Utils.Network.SCNetworkHandler;
 import com.example.seacen.news.Utils.Network.SCNetworkMethod;
@@ -35,6 +36,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +56,10 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
     @BindView(R.id.comment_refreshLayout)
     RefreshLayout refreshLayout;
 
-    List<CommentModel> models;
+    List<CommentModel> models = new ArrayList<>();
     CommentAdapter adapter = new CommentAdapter();
+
+    private Integer newsid;
     private Integer page = 1;
     private Integer size = 5;
 
@@ -64,6 +68,8 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_activity);
         ButterKnife.bind(this);
+
+        newsid = getIntent().getIntExtra("newsid", -1);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
@@ -80,6 +86,7 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
                 Map<String, Object> params = new HashMap<>();
+                params.put("newsid", newsid);
                 params.put("page", page);
                 params.put("size", size);
                 SCNetworkTool.shared().normalRequest(SCNetworkPort.Comment, SCNetworkMethod.GET, params, new SCNetworkHandler() {
@@ -87,11 +94,11 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                     public void successHandle(JSONObject jsonObject) {
                         int code = (int)jsonObject.get("status");
                         if (code == 200) {
-                            String info = jsonObject.get("msg").toString();
+                            String info = jsonObject.getString("msg");
                             JSONObject data = (JSONObject) jsonObject.get("data");
-                            JSONArray array = (JSONArray) data.get("content");
-                            List<CommentModel> news = array.toJavaList(CommentModel.class);
-                            models = news;
+                            assert data != null;
+                            JSONArray array = data.getJSONArray("content");
+                            models = array.toJavaList(CommentModel.class);
                             adapter.notifyDataSetChanged();
                             refreshLayout.finishRefresh(0);
                         } else {
@@ -117,6 +124,7 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page += 1;
                 Map<String, Object> params = new HashMap<>();
+                params.put("newsid", newsid);
                 params.put("page", page);
                 params.put("size", size);
                 SCNetworkTool.shared().normalRequest(SCNetworkPort.Comment, SCNetworkMethod.GET, params, new SCNetworkHandler() {
@@ -124,9 +132,10 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                     public void successHandle(JSONObject jsonObject) {
                         int code = (int)jsonObject.get("status");
                         if (code == 200) {
-                            String info = jsonObject.get("msg").toString();
+                            String info = jsonObject.getString("msg");
                             JSONObject data = (JSONObject) jsonObject.get("data");
-                            JSONArray array = (JSONArray) data.get("content");
+                            assert data != null;
+                            JSONArray array = data.getJSONArray("content");
                             List<CommentModel> news = array.toJavaList(CommentModel.class);
                             if (news.isEmpty()) {
                                 refreshLayout.finishLoadMoreWithNoMoreData();

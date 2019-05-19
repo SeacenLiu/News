@@ -43,8 +43,8 @@ public class NewsDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         // 获取传来的值
-        NewsModel newsModel = (NewsModel) getIntent().getSerializableExtra("news_model");
-        if (newsModel == null) {
+        model = (NewsModel) getIntent().getSerializableExtra("news_model");
+        if (model == null) {
             return;
         }
 
@@ -53,14 +53,14 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         // 请求详细
         SCNetworkPort port = SCNetworkPort.NewsDetail;
-        port.addSuffix(newsModel.getId());
+        port.addSuffix(model.getId());
         SCNetworkTool.shared().normalRequest(port, SCNetworkMethod.GET, null, new SCNetworkHandler() {
             @Override
             public void successHandle(JSONObject jsonObject) {
                 Integer code = jsonObject.getInteger("status");
                 String msg = jsonObject.getString("msg");
                 JSONObject data = jsonObject.getJSONObject("data");
-                NewsModel model = data.toJavaObject(NewsModel.class);
+                model = data.toJavaObject(NewsModel.class);
                 String htmlString = model.getContent();
                 htmlString = addHeadContent(htmlString, "https:");
 
@@ -101,6 +101,7 @@ public class NewsDetailActivity extends AppCompatActivity {
     @OnClick(R.id.news_detail_activity_comment_iv)
     void commentClick() {
         Intent intent = new Intent(NewsDetailActivity.this, CommentActivity.class);
+        intent.putExtra("newsid", model.id.intValue());
         transitionTo(intent);
     }
 

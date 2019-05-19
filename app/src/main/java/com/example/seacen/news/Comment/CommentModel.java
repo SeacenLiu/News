@@ -4,16 +4,16 @@ import com.example.seacen.news.Account.UserModel;
 
 public class CommentModel {
     public UserModel user;
-    public  Detail detail;
+    public Detail detail;
 
-    public class Detail {
+    public static class Detail {
         Integer id;
-        Integer fromid;
+        Integer fromuid;
         Integer likesnum;
         String content;
         Integer newsid;
         String time;
-        Integer toid;
+        Integer tocid;
 
         public Integer getId() {
             return id;
@@ -21,14 +21,6 @@ public class CommentModel {
 
         public void setId(Integer id) {
             this.id = id;
-        }
-
-        public Integer getFromid() {
-            return fromid;
-        }
-
-        public void setFromid(Integer fromid) {
-            this.fromid = fromid;
         }
 
         public Integer getLikesnum() {
@@ -63,12 +55,20 @@ public class CommentModel {
             this.time = time;
         }
 
-        public Integer getToid() {
-            return toid;
+        public Integer getFromuid() {
+            return fromuid;
         }
 
-        public void setToid(Integer toid) {
-            this.toid = toid;
+        public void setFromuid(Integer fromuid) {
+            this.fromuid = fromuid;
+        }
+
+        public Integer getTocid() {
+            return tocid;
+        }
+
+        public void setTocid(Integer tocid) {
+            this.tocid = tocid;
         }
     }
 
