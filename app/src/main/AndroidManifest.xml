@@ -20,10 +20,6 @@
         <!--</activity>-->
 
         <activity android:name=".Account.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".Account.RegisterActivity">
@@ -33,13 +29,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".News.NewsActivity"></activity>
-        <activity android:name=".News.NewsDetailActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <activity android:name=".News.NewsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".News.NewsDetailActivity"></activity>
 
         <activity android:name=".Comment.CommentActivity"></activity>
     </application>

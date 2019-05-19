@@ -61,9 +61,17 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textAlignment="textEnd"
+            android:textSize="14dp"
+            android:textAlignment="textStart"
             android:text="时间"/>
+
+        <ImageView
+            android:id="@+id/cell_comment_more"
+            android:layout_marginRight="5dp"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/comment_more"
+            />
     </LinearLayout>
 
 </LinearLayout>

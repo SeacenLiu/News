@@ -79,7 +79,6 @@ public class RegisterActivity extends AppCompatActivity {
     // 有这个方法才可以跳回前一个界面
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        System.out.println(item.getItemId());
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();

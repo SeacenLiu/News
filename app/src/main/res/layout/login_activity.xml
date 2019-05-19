@@ -24,12 +24,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
                 android:text="用户名：" />
 
             <EditText
                 android:id="@+id/login_activity_username_Et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
                 android:text="123" />
 
         </LinearLayout>
@@ -44,6 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
                 android:text="密    码：" />
 
             <EditText
@@ -51,53 +54,43 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:textSize="20dp"
                 android:text="123" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/login_activity_login_btn"
+        <LinearLayout
+            android:layout_marginTop="100dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:text="登录" />
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/login_activity_login_btn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:background="@color/colorPrimary"
+                android:text="登录"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:elevation="6dp"/>
 
-                <Button
-                    android:id="@+id/login_activity_register_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="前往注册" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/login_activity_register_btn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/login_activity_trip_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="游客登录" />
-            </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:text="前往注册"
+                android:textSize="20dp"
+                android:elevation="6dp"/>
         </LinearLayout>
+
+
     </LinearLayout>
 
 </LinearLayout>

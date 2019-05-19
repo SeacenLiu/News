@@ -12,6 +12,7 @@ public enum SCNetworkPort {
     // 评论
     Comment("/news/comment"),
     AddComment("/news/addcomment"),
+    DeleteComent("/news/"),
     LikesComment("/news/likescomment"),
     Cancellike("/news/cancellike");
 

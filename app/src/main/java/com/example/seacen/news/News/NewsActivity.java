@@ -1,5 +1,6 @@
 package com.example.seacen.news.News;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,6 +9,9 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.seacen.news.Account.Account;
+import com.example.seacen.news.Account.LoginActivity;
+import com.example.seacen.news.Account.UserManagerActivity;
 import com.example.seacen.news.R;
 import com.example.seacen.news.Utils.Network.SCNetworkHandler;
 import com.example.seacen.news.Utils.Network.SCNetworkMethod;
@@ -19,6 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class NewsActivity extends AppCompatActivity {
     static String TAG = "NewsActivity";
@@ -75,6 +80,19 @@ public class NewsActivity extends AppCompatActivity {
                 toast.show();
             }
         });
+    }
+
+    @OnClick(R.id.news_activity_user_iv)
+    void userBtnClick() {
+        if (Account.shared().isLogin()) {
+            // 进入用户管理界面
+            Intent intent = new Intent(NewsActivity.this, UserManagerActivity.class);
+            startActivity(intent);
+        } else {
+            // 进入登录注册界面
+            Intent intent = new Intent(NewsActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 }
 

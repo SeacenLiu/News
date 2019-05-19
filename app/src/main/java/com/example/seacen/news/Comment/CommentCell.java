@@ -18,8 +18,9 @@ import butterknife.OnClick;
 public class CommentCell extends LinearLayout {
 
     interface Delegate {
-        void likeAction(CommentCell cell);
-        void cancellikeAction(CommentCell cell);
+        void didLike(CommentCell cell);
+        void didCancellike(CommentCell cell);
+        void didMore(CommentCell cell);
     }
 
     @BindView(R.id.cell_comment_username_tv)
@@ -36,17 +37,24 @@ public class CommentCell extends LinearLayout {
     public Delegate delegate;
     public Boolean like;
 
+    @OnClick(R.id.cell_comment_more)
+    void moreAction() {
+        if (delegate != null) {
+            delegate.didMore(this);
+        }
+    }
+
     @OnClick(R.id.cell_comment_like_iv)
     void likeAction() {
         if (!like) {
             // 点赞
             if (delegate != null) {
-                delegate.likeAction(this);
+                delegate.didLike(this);
             }
         } else {
             // 取消点赞
             if (delegate != null) {
-                delegate.cancellikeAction(this);
+                delegate.didCancellike(this);
             }
         }
     }

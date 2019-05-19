@@ -34,8 +34,6 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn;
     @BindView(R.id.login_activity_register_btn)
     Button registerBtn;
-    @BindView(R.id.login_activity_trip_btn)
-    Button tripBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +62,14 @@ public class LoginActivity extends AppCompatActivity {
             public void successHandle(JSONObject jsonObject) {
                 int code = jsonObject.getInteger("status");
                 if (code == 200) {
+                    // TODO: - 进行用户登录状态保存
+
                     Toast toast = Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT);
                     toast.show();
-                    Intent intent = new Intent(LoginActivity.this, NewsActivity.class);
-                    startActivity(intent);
+                    // 返回到上一个 Activity
+                    LoginActivity.this.finish();
+//                    Intent intent = new Intent(LoginActivity.this, NewsActivity.class);
+//                    startActivity(intent);
                 } else {
                     Toast toast = Toast.makeText(LoginActivity.this, "账号或密码错误", Toast.LENGTH_SHORT);
                     toast.show();
@@ -82,17 +84,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.login_activity_trip_btn)
-    void tripClick() {
-        // TODO: - 游客登录操作
-        // 直接跳转新闻界面测试
-        Intent intent = new Intent(LoginActivity.this, NewsActivity.class);
-        startActivity(intent);
-    }
-
     void setupNavigationBar() {
         ActionBar navigationBar = getSupportActionBar();
         navigationBar.setTitle("登录");
+        navigationBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

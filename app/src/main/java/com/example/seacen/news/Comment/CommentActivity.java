@@ -1,5 +1,7 @@
 package com.example.seacen.news.Comment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.seacen.news.Account.Account;
 import com.example.seacen.news.Account.UserModel;
 import com.example.seacen.news.Comment.transition.ChangeColor;
 import com.example.seacen.news.Comment.transition.ChangePosition;
@@ -306,6 +309,19 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * 判断是否登录，未登录就跳转登录界面
+     * @return
+     */
+    private boolean loginCheck() {
+        if (!Account.shared().isLogin()) {
+            // TODO: - 跳转到登录界面
+
+            return false;
+        }
+        return true;
+    }
+
     private class CommentAdapter extends BaseAdapter {
         @Override
         public int getCount() {
@@ -347,7 +363,12 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
 
             cell.delegate = new CommentCell.Delegate() {
                 @Override
-                public void likeAction(CommentCell cell) {
+                public void didLike(CommentCell cell) {
+                    // 判断是否登录
+                    if (!loginCheck()) {
+                        return;
+                    }
+
                     cell.likeIv.setEnabled(false);
                     Map<String, Object> param = new HashMap<>();
                     param.put("id", detail.id);
@@ -376,7 +397,12 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                 }
 
                 @Override
-                public void cancellikeAction(CommentCell cell) {
+                public void didCancellike(CommentCell cell) {
+                    // 判断是否登录
+                    if (!loginCheck()) {
+                        return;
+                    }
+
                     Map<String, Object> param = new HashMap<>();
                     param.put("id", detail.id);
                     SCNetworkTool.shared().normalRequest(SCNetworkPort.Cancellike, SCNetworkMethod.GET, param, new SCNetworkHandler() {
@@ -401,6 +427,35 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                             toast.show();
                         }
                     });
+                }
+
+                @Override
+                public  void didMore(CommentCell cell) {
+                    // 捕获当前模型的评论 user 来使用
+                    // 判断该评论是否是自己
+                    String [] item;
+                    if (Account.shared().isMe(user.id)) {
+                        item = new String[]{"删除"};
+                    } else {
+                        item = new String[]{"举报"};
+                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CommentActivity.this);
+                    builder.setTitle("更多操作");
+                    builder.setItems(item, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (item[which].equals("删除")) {
+                                // 执行删除评论操作
+                                // TODO: - 进行网络请求
+
+                            } else if (item[which].equals("举报")) {
+                                // 执行举报操作
+                                Toast.makeText(CommentActivity.this, "已举报", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 }
             };
 
