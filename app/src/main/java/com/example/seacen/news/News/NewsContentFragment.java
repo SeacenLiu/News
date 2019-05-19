@@ -98,10 +98,15 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                     public void successHandle(JSONObject jsonObject) {
                         int code = (int)jsonObject.get("status");
                         if (code == 200) {
-                            String info = jsonObject.get("msg").toString();
-                            JSONObject data = (JSONObject) jsonObject.get("data");
-                            JSONArray array = (JSONArray) data.get("content");
+                            String info = jsonObject.getString("msg");
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            JSONArray array = data.getJSONArray("content");
                             List<NewsModel> newss = array.toJavaList(NewsModel.class);
+                            if (newss.isEmpty()) {
+                                String text = "暂时没有" + name + "新闻，敬请期待";
+                                Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
                             models = newss;
                             adapter.notifyDataSetChanged();
                             refreshlayout.finishRefresh(0);

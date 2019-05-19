@@ -67,6 +67,9 @@ public class NewsDetailActivity extends AppCompatActivity {
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("<HTML><HEAD><LINK href=\"webview.min.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>");
+                sb.append("<h1>");
+                sb.append(model.title);
+                sb.append("</h1>");
                 sb.append(htmlString);
                 sb.append("</body></HTML>");
                 webView.loadDataWithBaseURL("file:///android_asset/", sb.toString(), "text/html", "utf-8", null);
