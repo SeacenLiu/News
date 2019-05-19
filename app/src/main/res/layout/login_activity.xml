@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
     tools:context="com.example.seacen.news.Account.LoginActivity">
@@ -31,7 +30,7 @@
                 android:id="@+id/login_activity_username_Et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="admin" />
+                android:text="123" />
 
         </LinearLayout>
 
@@ -52,7 +51,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:text="123456" />
+                android:text="123" />
 
         </LinearLayout>
 
@@ -99,14 +98,6 @@
                     android:text="游客登录" />
             </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/login_activity_test_tv"
-            android:textAlignment="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="测试"/>
     </LinearLayout>
 
 </LinearLayout>

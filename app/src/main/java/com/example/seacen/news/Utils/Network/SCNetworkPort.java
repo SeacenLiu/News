@@ -1,15 +1,19 @@
 package com.example.seacen.news.Utils.Network;
 
 public enum SCNetworkPort {
+    // 账户
     Register("/news/register"),
     Login("/news/login"),
-    IndexNews("/news/indexnew"),
-    NewsDetail("/news/detail"),
+    // 新闻
     AllClassify("/news/allclassify"),
+    IndexNews("/news/indexnew"),
     Classify("/news/classify"),
-
+    NewsDetail("/news/detail"),
+    // 评论
     Comment("/news/comment"),
-    AddComment("/news/addcomment");
+    AddComment("/news/addcomment"),
+    LikesComment("/news/likescomment"),
+    Cancellike("/news/cancellike");
 
     static String root = "http://47.106.248.255:8080";
 

@@ -15,6 +15,16 @@ public class CommentModel {
         String time;
         Integer tocid;
 
+        public Boolean getLiked() {
+            return isLiked;
+        }
+
+        public void setLiked(Boolean liked) {
+            isLiked = liked;
+        }
+
+        Boolean isLiked;
+
         public Integer getId() {
             return id;
         }

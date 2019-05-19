@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,8 +13,14 @@ import com.example.seacen.news.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class CommentCell extends LinearLayout {
+
+    interface Delegate {
+        void likeAction(CommentCell cell);
+        void cancellikeAction(CommentCell cell);
+    }
 
     @BindView(R.id.cell_comment_username_tv)
     TextView usernameTv;
@@ -23,6 +30,35 @@ public class CommentCell extends LinearLayout {
     TextView likeTv;
     @BindView(R.id.cell_comment_time)
     TextView timeTv;
+    @BindView(R.id.cell_comment_like_iv)
+    ImageView likeIv;
+
+    public Delegate delegate;
+    public Boolean like;
+
+    @OnClick(R.id.cell_comment_like_iv)
+    void likeAction() {
+        if (!like) {
+            // 点赞
+            if (delegate != null) {
+                delegate.likeAction(this);
+            }
+        } else {
+            // 取消点赞
+            if (delegate != null) {
+                delegate.cancellikeAction(this);
+            }
+        }
+    }
+
+    public void setLike(Boolean like) {
+        this.like = like;
+        if (like) {
+            likeIv.setImageDrawable(getResources().getDrawable(R.drawable.like_like));
+        } else {
+            likeIv.setImageDrawable(getResources().getDrawable(R.drawable.like_none));
+        }
+    }
 
     /**
      * 在java代码里new的时候会用到

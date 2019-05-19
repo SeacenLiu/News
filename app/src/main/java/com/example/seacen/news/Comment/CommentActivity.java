@@ -107,10 +107,13 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                 int code = jsonObject.getInteger("status");
                 if (code == 200) {
                     // 评论成功
-                    editText.clearFocus();
+                    editText.setText("");
                     Toast toast = Toast.makeText(CommentActivity.this, "评论成功", Toast.LENGTH_SHORT);
                     toast.show();
-                    // TODO: - 后台需要返回一个完整评论！！！
+                    // 刷新评论
+                    CommentModel commentModel = jsonObject.getObject("data", CommentModel.class);
+                    models.add(0, commentModel);
+                    adapter.notifyDataSetChanged();
                 } else {
                     // 评论失败 -> 没有登录
                     Toast toast = Toast.makeText(CommentActivity.this, "评论失败", Toast.LENGTH_SHORT);
@@ -320,6 +323,11 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
         }
 
         @Override
+        public boolean isEnabled(int position) {
+            return false;
+        }
+
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = new CommentCell(CommentActivity.this);
@@ -331,11 +339,79 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
             CommentModel.Detail detail = model.detail;
             cell.usernameTv.setText(user.name);
             cell.contentTv.setText(detail.content);
-            String like = "点赞：" + String.valueOf(detail.likesnum);
+            String like = String.valueOf(detail.likesnum);
             cell.likeTv.setText(like);
             cell.timeTv.setText(detail.time);
             cell.timeTv.setText(TimeUtil.getTimeFormatText(detail.getTime()));
+            cell.setLike(detail.isLiked);
+
+            cell.delegate = new CommentCell.Delegate() {
+                @Override
+                public void likeAction(CommentCell cell) {
+                    cell.likeIv.setEnabled(false);
+                    Map<String, Object> param = new HashMap<>();
+                    param.put("id", detail.id);
+                    SCNetworkTool.shared().normalRequest(SCNetworkPort.LikesComment, SCNetworkMethod.GET, param, new SCNetworkHandler() {
+                        @Override
+                        public void successHandle(JSONObject jsonObject) {
+                            cell.likeIv.setEnabled(true);
+                            int code = jsonObject.getInteger("status");
+                            if (code == 200) {
+                                refreshLike(position, true);
+                                Toast toast = Toast.makeText(CommentActivity.this, "点赞成功", Toast.LENGTH_SHORT);
+                                toast.show();
+                            } else {
+                                Toast toast = Toast.makeText(CommentActivity.this, String.valueOf(code), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        }
+
+                        @Override
+                        public void errorHandle(Exception error) {
+                            cell.likeIv.setEnabled(true);
+                            Toast toast = Toast.makeText(CommentActivity.this, "点赞失败，请稍后重试", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
+                }
+
+                @Override
+                public void cancellikeAction(CommentCell cell) {
+                    Map<String, Object> param = new HashMap<>();
+                    param.put("id", detail.id);
+                    SCNetworkTool.shared().normalRequest(SCNetworkPort.Cancellike, SCNetworkMethod.GET, param, new SCNetworkHandler() {
+                        @Override
+                        public void successHandle(JSONObject jsonObject) {
+                            cell.likeIv.setEnabled(true);
+                            int code = jsonObject.getInteger("status");
+                            if (code == 200) {
+                                refreshLike(position, false);
+                                Toast toast = Toast.makeText(CommentActivity.this, "取消点赞成功", Toast.LENGTH_SHORT);
+                                toast.show();
+                            } else {
+                                Toast toast = Toast.makeText(CommentActivity.this, String.valueOf(code), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        }
+
+                        @Override
+                        public void errorHandle(Exception error) {
+                            cell.likeIv.setEnabled(true);
+                            Toast toast = Toast.makeText(CommentActivity.this, "取消点赞，请稍后重试", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
+                }
+            };
+
             return cell;
         }
+    }
+
+    private void refreshLike(int position, Boolean like) {
+        CommentModel.Detail detail = models.get(position).getDetail();
+        detail.setLiked(like);
+        detail.likesnum += like ? 1 : -1;
+        adapter.notifyDataSetChanged();
     }
 }
