@@ -53,7 +53,7 @@
         android:transitionName="comment">
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/news_refreshLayout"
+            android:id="@+id/comment_refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#FFFFFF"

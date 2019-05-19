@@ -16,13 +16,15 @@ import butterknife.ButterKnife;
 public class CommentCell extends LinearLayout {
 
     @BindView(R.id.cell_comment_username_tv)
-    TextView username;
+    TextView usernameTv;
     @BindView(R.id.cell_comment_build_tv)
-    TextView build;
+    TextView buildTv;
     @BindView(R.id.cell_comment_content_tv)
-    TextView content;
+    TextView contentTv;
     @BindView(R.id.cell_comment_like)
-    TextView like;
+    TextView likeTv;
+    @BindView(R.id.cell_comment_time)
+    TextView timeTv;
 
     /**
      * 在java代码里new的时候会用到

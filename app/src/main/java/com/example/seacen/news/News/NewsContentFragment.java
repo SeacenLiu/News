@@ -44,7 +44,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
     List<NewsModel> models = new ArrayList<>();
     NewsContentFragment.NewsAdapter adapter = new NewsContentFragment.NewsAdapter();
     private Integer page = 1;
-    private Integer size = 1;
+    private Integer size = 5;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
