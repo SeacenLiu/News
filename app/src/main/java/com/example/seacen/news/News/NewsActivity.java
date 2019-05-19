@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.seacen.news.R;
 import com.example.seacen.news.Utils.Network.SCNetworkHandler;
 import com.example.seacen.news.Utils.Network.SCNetworkMethod;
@@ -26,7 +29,7 @@ public class NewsActivity extends AppCompatActivity {
     ViewPager viewPager;
 
     private NewsContentFragmentAdapter adapter;
-    private List<String> names;
+    private List<NewsClassifyModel> classifyModels;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,49 +37,43 @@ public class NewsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         adapter = new NewsContentFragmentAdapter(getSupportFragmentManager());
+
+        initClassify();
+        loadClassify();
+        adapter.setList(classifyModels);
+
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
 
-        testClassify();
-        adapter.setList(names);
+    private void initClassify() {
+        // 要闻 就是 首页
+        classifyModels = new ArrayList<>();
+        NewsClassifyModel home = new NewsClassifyModel();
+        home.setId(0);
+        home.setName("要闻");
+        classifyModels.add(home);
     }
 
     private void loadClassify() {
-        // FIXME: - 根据后台获取分类然后本地化数据
-    }
+        // TODO: - 根据后台获取分类然后本地化数据
+        SCNetworkTool.shared().normalRequest(SCNetworkPort.AllClassify, SCNetworkMethod.GET, null, new SCNetworkHandler() {
+            @Override
+            public void successHandle(JSONObject jsonObject) {
+                JSONArray array = jsonObject.getJSONArray("data");
+                List<NewsClassifyModel> data =  array.toJavaList(NewsClassifyModel.class);
+                for (NewsClassifyModel model: data) {
+                    classifyModels.add(model);
+                }
+                adapter.setList(classifyModels);
+            }
 
-    private void testClassify() {
-        names = new ArrayList<>();
-        names.add("要闻");
-        names.add("体育");
-        names.add("教育");
-        names.add("财经");
-        names.add("社会");
-        names.add("娱乐");
-        names.add("军事");
-        names.add("国内");
-        names.add("科技");
-        names.add("互联网");
-        names.add("房产");
-        names.add("国际");
-        names.add("汽车");
-        names.add("游戏");
-//        names = new ArrayList<>();
-//        names.add("关注");
-//        names.add("推荐");
-//        names.add("热点");
-//        names.add("视频");
-//        names.add("小说");
-//        names.add("娱乐");
-//        names.add("问答");
-//        names.add("图片");
-//        names.add("科技");
-//        names.add("懂车帝");
-//        names.add("体育");
-//        names.add("财经");
-//        names.add("军事");
-//        names.add("国际");
-//        names.add("健康");
+            @Override
+            public void errorHandle(Exception error) {
+                Toast toast = Toast.makeText(NewsActivity.this,"分类加载错误", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 }
 

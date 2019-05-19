@@ -36,13 +36,16 @@ import butterknife.ButterKnife;
 public class NewsContentFragment extends Fragment implements AdapterView.OnItemClickListener {
     static String TAG = "NewsContentFragment";
 
-    private String name;
     @BindView(R.id.news_lv)
     ListView listView;
     @BindView(R.id.news_refreshLayout)
     RefreshLayout refreshLayout;
+
     List<NewsModel> models = new ArrayList<>();
     NewsContentFragment.NewsAdapter adapter = new NewsContentFragment.NewsAdapter();
+
+    private String name;
+    private int classifyid;
     private Integer page = 1;
     private Integer size = 5;
 
@@ -52,6 +55,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
 
         Bundle bundle = getArguments();
         name = bundle.getString("name");
+        classifyid = bundle.getInt("classifyid");
         if (name == null) {
             name = "参数非法";
         }
@@ -85,7 +89,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                     port = SCNetworkPort.IndexNews;
                 } else {
                     port = SCNetworkPort.Classify;
-                    params.put("classify", name);
+                    params.put("classify", classifyid);
                 }
                 SCNetworkTool.shared().normalRequest(port, SCNetworkMethod.GET, params, new SCNetworkHandler() {
                     @Override

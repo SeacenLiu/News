@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsContentFragmentAdapter extends FragmentPagerAdapter {
-    private List<String> names;
+    private List<NewsClassifyModel> classifyModels;
 
     public NewsContentFragmentAdapter(FragmentManager fm) {
         super(fm);
-        this.names = new ArrayList<>();
+        this.classifyModels = new ArrayList<>();
     }
 
     /**
@@ -21,34 +21,37 @@ public class NewsContentFragmentAdapter extends FragmentPagerAdapter {
      *
      * @param datas
      */
-    public void setList(List<String> datas) {
-        this.names.clear();
-        this.names.addAll(datas);
+    public void setList(List<NewsClassifyModel> datas) {
+        this.classifyModels.clear();
+        this.classifyModels.addAll(datas);
         notifyDataSetChanged();
     }
 
     @Override
     public Fragment getItem(int position) {
         NewsContentFragment fragment = new NewsContentFragment();
+        NewsClassifyModel model = classifyModels.get(position);
         Bundle bundle = new Bundle();
-        bundle.putString("name", names.get(position));
+        bundle.putString("name", model.name);
+        bundle.putInt("classifyid", model.id);
         fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return names.size();
+        return classifyModels.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        String plateName = names.get(position);
+        String plateName = classifyModels.get(position).name;
         if (plateName == null) {
             plateName = "";
-        } else if (plateName.length() > names.size()) {
-            plateName = plateName.substring(0, names.size()) + "...";
         }
+//        else if (plateName.length() > 0) {
+//            plateName = plateName.substring(0, classifyModels.size()) + "...";
+//        }
         return plateName;
     }
 }

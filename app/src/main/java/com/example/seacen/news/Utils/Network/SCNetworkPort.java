@@ -5,6 +5,7 @@ public enum SCNetworkPort {
     Login("/news/login"),
     IndexNews("/news/indexnew"),
     NewsDetail("/news/detail"),
+    AllClassify("/news/allclassify"),
     Classify("/news/classify"),
     Comment("/news/comment");
 

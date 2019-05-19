@@ -163,7 +163,8 @@ public class SCNetworkTool {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
 //                    Log.d(TAG, "onResponse: " + response.body().string());
-                    if (!response.header("Content-Type").equals("application/json;charset=UTF-8")) {
+                    String header = response.header("Content-Type");
+                    if (!(header.equals("application/json;charset=UTF-8") || header.equals("application/json;charset=utf-8"))) {
                         // 后台不返回 JSON 视为错误
                         Exception exception = new Exception("后台返回格式错误");
                         mainThreadCallBack(null, exception, handler);
