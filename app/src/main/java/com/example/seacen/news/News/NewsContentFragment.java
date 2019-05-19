@@ -21,6 +21,7 @@ import com.example.seacen.news.Utils.Network.SCNetworkHandler;
 import com.example.seacen.news.Utils.Network.SCNetworkMethod;
 import com.example.seacen.news.Utils.Network.SCNetworkPort;
 import com.example.seacen.news.Utils.Network.SCNetworkTool;
+import com.example.seacen.news.Utils.TimeUtil;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -47,7 +48,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
     private String name;
     private int classifyid;
     private Integer page = 1;
-    private Integer size = 5;
+    private Integer size = 10;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
         // 初始化
         setup(view);
 
+        refreshLayout.autoRefresh();
         return view;
     }
 
@@ -218,13 +220,12 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
             NewsCell cell = (NewsCell)convertView;
             NewsModel model = models.get(position);
             cell.titleTv.setText(model.getTitle());
-            cell.detailTv.setText(model.getIntro());
+//            cell.detailTv.setText(model.getIntro());
             Glide.with(cell).load(model.img).placeholder(R.drawable.img_placeholder).into(cell.coverImg);
             cell.sourceTv.setText(model.getSource());
-            cell.readTv.setText("阅读量："+model.getReadnum());
-            cell.commentTv.setText("阅读量："+model.getCommentnum());
-            // FIXME: - 时间需要做处理
-//            cell.timeTv.setText(model.getTime());
+            cell.readTv.setText(model.getReadnum()+"阅");
+            cell.commentTv.setText(model.getCommentnum()+"评");
+            cell.timeTv.setText(TimeUtil.getTimeFormatText(model.getTime()));
             return cell;
         }
     }

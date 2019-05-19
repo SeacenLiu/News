@@ -11,6 +11,7 @@ import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.seacen.news.Comment.CommentActivity;
@@ -53,7 +54,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         // 请求详细
         SCNetworkPort port = SCNetworkPort.NewsDetail;
-        port.addSuffix(model.getId());
+        port.setSuffix(model.getId());
         SCNetworkTool.shared().normalRequest(port, SCNetworkMethod.GET, null, new SCNetworkHandler() {
             @Override
             public void successHandle(JSONObject jsonObject) {
@@ -73,7 +74,8 @@ public class NewsDetailActivity extends AppCompatActivity {
 
             @Override
             public void errorHandle(Exception error) {
-
+                Toast toast = Toast.makeText(NewsDetailActivity.this, error.toString(), Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
     }

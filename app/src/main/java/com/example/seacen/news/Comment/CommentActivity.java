@@ -32,6 +32,7 @@ import com.example.seacen.news.Utils.Network.SCNetworkHandler;
 import com.example.seacen.news.Utils.Network.SCNetworkMethod;
 import com.example.seacen.news.Utils.Network.SCNetworkPort;
 import com.example.seacen.news.Utils.Network.SCNetworkTool;
+import com.example.seacen.news.Utils.TimeUtil;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -82,6 +83,8 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
         setTransition();
         setupNavigation();
         setupRefresh();
+
+        refreshLayout.autoRefresh();
     }
 
     @OnClick(R.id.comment_activity_send_btn)
@@ -219,7 +222,6 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("评论区");
         actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.hide();
     }
 
     private void setTransition() {
@@ -332,8 +334,7 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
             String like = "点赞：" + String.valueOf(detail.likesnum);
             cell.likeTv.setText(like);
             cell.timeTv.setText(detail.time);
-            // FIXME: - 时间需要做处理
-//            cell.timeTv.setText(model.getTime());
+            cell.timeTv.setText(TimeUtil.getTimeFormatText(detail.getTime()));
             return cell;
         }
     }

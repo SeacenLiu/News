@@ -14,7 +14,6 @@ public class CommentEnterTransition extends Visibility {
     private static final String TAG = "CommentEnterTransition";
 
     private static final String PROPNAME_BOTTOM_BOX_TRANSITION_Y = "custom_bottom_box_enter_transition:change_transY:transitionY";
-    private static final String PROPNAME_TOP_BAR_TRANSITION_Y = "custom_top_bar_transition:change_transY:transitionY";
 
     private View mBottomView;
     private Context mContext;
@@ -24,7 +23,6 @@ public class CommentEnterTransition extends Visibility {
         mContext = context;
     }
 
-
     @Override
     public void captureStartValues(TransitionValues transitionValues) {
         super.captureStartValues(transitionValues);
@@ -33,7 +31,6 @@ public class CommentEnterTransition extends Visibility {
 
         // 保存 计算初始值
         transitionValues.values.put(PROPNAME_BOTTOM_BOX_TRANSITION_Y, transY);
-        transitionValues.values.put(PROPNAME_TOP_BAR_TRANSITION_Y, -mContext.getResources().getDimensionPixelOffset(R.dimen.top_bar_height));
     }
 
     @Override
@@ -42,7 +39,6 @@ public class CommentEnterTransition extends Visibility {
 
         // 保存计算结束值
         transitionValues.values.put(PROPNAME_BOTTOM_BOX_TRANSITION_Y, 0);
-        transitionValues.values.put(PROPNAME_TOP_BAR_TRANSITION_Y, 0);
     }
 
 
@@ -60,7 +56,6 @@ public class CommentEnterTransition extends Visibility {
             return null;
         }
 
-        // 这里去除 之前 存储的 初始值 和 结束值, 然后执行动画
         if (view == mBottomView) {
             int startTransY = (int) startValues.values.get(PROPNAME_BOTTOM_BOX_TRANSITION_Y);
             int endTransY = (int) endValues.values.get(PROPNAME_BOTTOM_BOX_TRANSITION_Y);
@@ -90,7 +85,6 @@ public class CommentEnterTransition extends Visibility {
             return null;
         }
 
-        // 这里执行 返回动画,  这里金 初始值 和技术值 对调了,这样动画, 就就和原来动画想反了
         if (view == mBottomView) {
             int startTransY = (int) endValues.values.get(PROPNAME_BOTTOM_BOX_TRANSITION_Y);
             int endTransY = (int) startValues.values.get(PROPNAME_BOTTOM_BOX_TRANSITION_Y);

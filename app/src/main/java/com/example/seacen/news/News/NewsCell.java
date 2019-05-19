@@ -20,8 +20,8 @@ public class NewsCell extends LinearLayout {
     public ImageView coverImg;
     @BindView(R.id.cell_news_title_tv)
     public TextView titleTv;
-    @BindView(R.id.cell_news_detail_tv)
-    public TextView detailTv;
+//    @BindView(R.id.cell_news_detail_tv)
+//    public TextView detailTv;
     @BindView(R.id.cell_news_source_tv)
     public TextView sourceTv;
     @BindView(R.id.cell_news_time_tv)

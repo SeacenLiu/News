@@ -14,20 +14,26 @@ public enum SCNetworkPort {
     static String root = "http://47.106.248.255:8080";
 
     private String subpath;
+    /**
+     * 用于拼接URL
+     */
+    private String suffix;
     SCNetworkPort(String s) {
         this.subpath = s;
     }
 
-    public void addSuffix(Integer integer) {
-        addSuffix(String.valueOf(integer));
+    public void setSuffix(Integer integer) {
+        this.suffix = String.valueOf(integer);
     }
 
-    public void addSuffix(String suffix) {
-        this.subpath += "/";
-        this.subpath += suffix;
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 
     public String path() {
+        if (suffix != null) {
+            return root + subpath + "/" + suffix;
+        }
         return root + subpath;
     }
 }
