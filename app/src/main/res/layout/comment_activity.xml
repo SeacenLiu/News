@@ -1,49 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/comment_activity_all_v"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:id="@+id/comment_activity_bottom_send_bar"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/bottom_bg"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/comment_activity_send_btn"
-            android:layout_width="70dp"
-            android:layout_height="45dp"
-            android:layout_alignBottom="@+id/comment_activity_edit_et"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:shadowColor="@color/colorPrimary"
-            android:text="发送"
-            android:textColor="@color/colorPrimary" />
-
-        <EditText
-            android:id="@+id/comment_activity_edit_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="5dp"
-            android:layout_toLeftOf="@id/comment_activity_send_btn"
-            android:height="80dp"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:cursorVisible="true"
-            android:hint="请输入评论"
-            android:screenOrientation="portrait"
-            android:textCursorDrawable="@null"
-            android:textSize="15dp"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-
-    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/comment_activity_content"
@@ -82,5 +43,52 @@
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/comment_activity_bottom_send_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:elevation="6dp">
+
+        <Button
+            android:id="@+id/comment_activity_send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignBottom="@+id/comment_activity_edit_et"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:shadowColor="@color/colorPrimary"
+            android:text="发送"
+            android:textSize="18dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:elevation="6dp"
+            />
+
+        <EditText
+            android:id="@+id/comment_activity_edit_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@id/comment_activity_send_btn"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:cursorVisible="true"
+            android:hint="请输入评论"
+            android:screenOrientation="portrait"
+            android:textCursorDrawable="@null"
+            android:textSize="18dp"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

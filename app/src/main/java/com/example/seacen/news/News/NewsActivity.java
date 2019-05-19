@@ -36,6 +36,7 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.news_activity);
         ButterKnife.bind(this);
 
+        getSupportActionBar().hide();
         adapter = new NewsContentFragmentAdapter(getSupportFragmentManager());
 
         initClassify();

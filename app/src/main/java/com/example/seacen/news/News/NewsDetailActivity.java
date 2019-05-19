@@ -31,7 +31,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.news_detail_activity_wb)
     WebView webView;
-    @BindView(R.id.news_detail_activity_comment_iv)
+    @BindView(R.id.news_detail_floting_Btn)
     View commentIv;
 
     NewsModel model;
@@ -80,25 +80,27 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     /**
      * 为 src 添加URL头部
+     *
      * @param content
      * @param addHttp
      * @return
      */
-    String addHeadContent(String content,String addHttp){
-        String patternStr="<img\\s*([^>]*)\\s*src=\\\"(.*?)\\\"\\s*([^>]*)>";
-        Pattern pattern = Pattern.compile(patternStr,Pattern.CASE_INSENSITIVE);
+    String addHeadContent(String content, String addHttp) {
+        String patternStr = "<img\\s*([^>]*)\\s*src=\\\"(.*?)\\\"\\s*([^>]*)>";
+        Pattern pattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(content);
         String result = content;
-        while(matcher.find()) {
+        while (matcher.find()) {
             String src = matcher.group(2);
             String replaceSrc = "";
             replaceSrc = addHttp + src;
-            result = result.replaceAll(src,replaceSrc);
+            result = result.replaceAll(src, replaceSrc);
         }
         return result;
     }
 
-    @OnClick(R.id.news_detail_activity_comment_iv)
+    //    @OnClick(R.id.news_detail_activity_comment_iv)
+    @OnClick(R.id.news_detail_floting_Btn)
     void commentClick() {
         Intent intent = new Intent(NewsDetailActivity.this, CommentActivity.class);
         intent.putExtra("newsid", model.id.intValue());
@@ -118,7 +120,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     private void setupWebView() {
         // 防止跳转到浏览器
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return super.shouldOverrideUrlLoading(view, request);
