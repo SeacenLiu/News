@@ -13,12 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bumptech.glide.Glide;
 import com.example.seacen.news.Account.UserModel;
 import com.example.seacen.news.Comment.transition.ChangeColor;
 import com.example.seacen.news.Comment.transition.ChangePosition;
@@ -26,7 +27,6 @@ import com.example.seacen.news.Comment.transition.CommentEnterTransition;
 import com.example.seacen.news.Comment.transition.ShareElemEnterRevealTransition;
 import com.example.seacen.news.Comment.transition.ShareElemReturnChangePosition;
 import com.example.seacen.news.Comment.transition.ShareElemReturnRevealTransition;
-import com.example.seacen.news.News.NewsModel;
 import com.example.seacen.news.R;
 import com.example.seacen.news.Utils.Network.SCNetworkHandler;
 import com.example.seacen.news.Utils.Network.SCNetworkMethod;
@@ -43,6 +43,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class CommentActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "CommentActivity";
@@ -55,6 +56,10 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
     ListView listView;
     @BindView(R.id.comment_refreshLayout)
     RefreshLayout refreshLayout;
+    @BindView(R.id.comment_activity_send_btn)
+    TextView sendBtn;
+    @BindView(R.id.comment_activity_edit_et)
+    EditText editText;
 
     List<CommentModel> models = new ArrayList<>();
     CommentAdapter adapter = new CommentAdapter();
@@ -77,6 +82,47 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
         setTransition();
         setupNavigation();
         setupRefresh();
+    }
+
+    @OnClick(R.id.comment_activity_send_btn)
+    void sendBtnClick() {
+        String text = editText.getText().toString().trim();
+        if (text.isEmpty()) {
+            // 提示用户输入留言
+            Toast toast = Toast.makeText(CommentActivity.this, "请输入评论内容", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        // 发送评论（禁用发送按钮）
+        sendBtn.setEnabled(false);
+        Map<String, Object> params = new HashMap<>();
+        params.put("newsid", newsid);
+        params.put("content", text);
+        SCNetworkTool.shared().normalRequest(SCNetworkPort.AddComment, SCNetworkMethod.POST, params, new SCNetworkHandler() {
+            @Override
+            public void successHandle(JSONObject jsonObject) {
+                int code = jsonObject.getInteger("status");
+                if (code == 200) {
+                    // 评论成功
+                    editText.clearFocus();
+                    Toast toast = Toast.makeText(CommentActivity.this, "评论成功", Toast.LENGTH_SHORT);
+                    toast.show();
+                    // TODO: - 后台需要返回一个完整评论！！！
+                } else {
+                    // 评论失败 -> 没有登录
+                    Toast toast = Toast.makeText(CommentActivity.this, "评论失败", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                sendBtn.setEnabled(true);
+            }
+
+            @Override
+            public void errorHandle(Exception error) {
+                sendBtn.setEnabled(true);
+                Toast toast = Toast.makeText(CommentActivity.this, error.toString(), Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 
     private void setupRefresh() {
@@ -282,8 +328,6 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
             UserModel user = model.getUser();
             CommentModel.Detail detail = model.detail;
             cell.usernameTv.setText(user.name);
-            String build = String.valueOf(position) + "楼";
-            cell.buildTv.setText(build);
             cell.contentTv.setText(detail.content);
             String like = "点赞：" + String.valueOf(detail.likesnum);
             cell.likeTv.setText(like);

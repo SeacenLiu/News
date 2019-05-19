@@ -59,8 +59,6 @@ public class SCNetworkTool {
      * @return OkHttpClient
      */
     private static OkHttpClient genericClient() {
-        HashMap<HttpUrl, List> cookieStore =new HashMap<>();
-
         OkHttpClient httpClient = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() { // 拦截器
                     @Override
@@ -76,15 +74,16 @@ public class SCNetworkTool {
 
                 })
                 .cookieJar(new CookieJar() { // 添加 cookie
+                    private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
                     @Override
                     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                        cookieStore.put(url, cookies);
+                        cookieStore.put(url.host(), cookies);
                     }
 
                     @Override
                     public List<Cookie> loadForRequest(HttpUrl url) {
-                        List cookies = cookieStore.get(url);
-                        return cookies !=null ? cookies : new ArrayList();
+                        List cookies = cookieStore.get(url.host());
+                        return cookies != null ? cookies : new ArrayList();
                     }
                 })
                 .build();

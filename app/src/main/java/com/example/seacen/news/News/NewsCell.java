@@ -62,7 +62,7 @@ public class NewsCell extends LinearLayout {
 
     private void setupUI(Context context) {
         //加载布局文件，与setContentView()效果一样
-        View view = LayoutInflater.from(context).inflate(R.layout.cell_news, this);
+        View view = LayoutInflater.from(context).inflate(R.layout.news_cell, this);
         ButterKnife.bind(this, view);
     }
 

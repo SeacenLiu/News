@@ -15,8 +15,8 @@
         android:focusableInTouchMode="true"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_send"
+        <Button
+            android:id="@+id/comment_activity_send_btn"
             android:layout_width="70dp"
             android:layout_height="45dp"
             android:layout_alignBottom="@+id/comment_activity_edit_et"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="5dp"
-            android:layout_toLeftOf="@id/tv_send"
+            android:layout_toLeftOf="@id/comment_activity_send_btn"
             android:height="80dp"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:cursorVisible="true"
@@ -72,7 +72,7 @@
                 android:layout_height="match_parent"
                 android:dividerHeight="1dp"
                 android:minHeight="60dp"
-                tools:listitem="@layout/cell_comment">
+                tools:listitem="@layout/comment_cell">
 
             </ListView>
 

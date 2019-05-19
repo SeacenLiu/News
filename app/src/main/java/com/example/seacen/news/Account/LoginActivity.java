@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.seacen.news.News.NewsActivity;
@@ -61,15 +62,22 @@ public class LoginActivity extends AppCompatActivity {
         SCNetworkTool.shared().normalRequest(SCNetworkPort.Login, SCNetworkMethod.POST, params, new SCNetworkHandler() {
             @Override
             public void successHandle(JSONObject jsonObject) {
-                TextView textView = findViewById(R.id.login_activity_test_tv);
-                textView.setText(jsonObject.toString());
+                int code = jsonObject.getInteger("status");
+                if (code == 200) {
+                    Toast toast = Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Intent intent = new Intent(LoginActivity.this, NewsActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast toast = Toast.makeText(LoginActivity.this, "账号或密码错误", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
 
             @Override
             public void errorHandle(Exception error) {
-                Log.i(TAG, error.toString());
-                TextView textView = findViewById(R.id.login_activity_test_tv);
-                textView.setText(error.toString());
+                Toast toast = Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
     }

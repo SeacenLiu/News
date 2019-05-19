@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="1dp"
-            tools:listitem="@layout/cell_news"
+            tools:listitem="@layout/news_cell"
             >
 
         </ListView>

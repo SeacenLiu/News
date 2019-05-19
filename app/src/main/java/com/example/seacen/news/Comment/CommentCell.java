@@ -17,8 +17,6 @@ public class CommentCell extends LinearLayout {
 
     @BindView(R.id.cell_comment_username_tv)
     TextView usernameTv;
-    @BindView(R.id.cell_comment_build_tv)
-    TextView buildTv;
     @BindView(R.id.cell_comment_content_tv)
     TextView contentTv;
     @BindView(R.id.cell_comment_like)
@@ -57,7 +55,7 @@ public class CommentCell extends LinearLayout {
 
     private void setupUI(Context context) {
         //加载布局文件，与setContentView()效果一样
-        View view = LayoutInflater.from(context).inflate(R.layout.cell_comment, this);
+        View view = LayoutInflater.from(context).inflate(R.layout.comment_cell, this);
         ButterKnife.bind(view, this);
     }
 
