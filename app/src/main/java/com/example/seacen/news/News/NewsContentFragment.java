@@ -153,6 +153,7 @@ public class NewsContentFragment extends Fragment implements AdapterView.OnItemC
                             JSONArray array = data.getJSONArray("content");
                             List<NewsModel> newss = array.toJavaList(NewsModel.class);
                             if (newss.isEmpty()) {
+                                Toast.makeText(getActivity(), "我是有底线的！", Toast.LENGTH_SHORT).show();
                                 refreshlayout.finishLoadMoreWithNoMoreData();
                             } else {
                                 for (NewsModel model: newss) {

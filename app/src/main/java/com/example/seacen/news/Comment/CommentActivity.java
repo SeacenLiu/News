@@ -201,6 +201,7 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                             JSONArray array = data.getJSONArray("content");
                             List<CommentModel> news = array.toJavaList(CommentModel.class);
                             if (news.isEmpty()) {
+                                Toast.makeText(CommentActivity.this, "我是有底线的！", Toast.LENGTH_SHORT).show();
                                 refreshLayout.finishLoadMoreWithNoMoreData();
                             } else {
                                 for (CommentModel model: news) {
