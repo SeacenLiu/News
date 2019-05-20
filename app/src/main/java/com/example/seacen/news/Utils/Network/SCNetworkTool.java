@@ -149,6 +149,13 @@ public class SCNetworkTool {
                             .post(RequestBody.create(mediaType, requestBody))
                             .build();
                     break;
+                case DELETE:
+                    url = jointGetURL(url, params);
+                    request = new Request.Builder()
+                            .url(url)
+                            .delete()
+                            .build();
+                    break;
             }
 
             Call call = client.newCall(request);

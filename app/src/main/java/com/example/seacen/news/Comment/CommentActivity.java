@@ -2,6 +2,8 @@ package com.example.seacen.news.Comment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Network;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.seacen.news.Account.Account;
+import com.example.seacen.news.Account.LoginActivity;
 import com.example.seacen.news.Account.UserModel;
 import com.example.seacen.news.Comment.transition.ChangeColor;
 import com.example.seacen.news.Comment.transition.ChangePosition;
@@ -92,6 +95,9 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
 
     @OnClick(R.id.comment_activity_send_btn)
     void sendBtnClick() {
+        if (!loginCheck()) {
+            return;
+        }
         String text = editText.getText().toString().trim();
         if (text.isEmpty()) {
             // 提示用户输入留言
@@ -151,11 +157,14 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                         if (code == 200) {
                             String info = jsonObject.getString("msg");
                             JSONObject data = (JSONObject) jsonObject.get("data");
-                            assert data != null;
                             JSONArray array = data.getJSONArray("content");
                             models = array.toJavaList(CommentModel.class);
+                            if (models.isEmpty()) {
+                                Toast toast = Toast.makeText(CommentActivity.this, "暂时没有评论，赶快评论吧！", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
                             adapter.notifyDataSetChanged();
-                            refreshLayout.finishRefresh(0);
+                            refreshLayout.finishRefresh();
                         } else {
                             Toast toast = Toast.makeText(CommentActivity.this, "服务器错误", Toast.LENGTH_SHORT);
                             toast.show();
@@ -189,7 +198,6 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                         if (code == 200) {
                             String info = jsonObject.getString("msg");
                             JSONObject data = (JSONObject) jsonObject.get("data");
-                            assert data != null;
                             JSONArray array = data.getJSONArray("content");
                             List<CommentModel> news = array.toJavaList(CommentModel.class);
                             if (news.isEmpty()) {
@@ -316,7 +324,8 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
     private boolean loginCheck() {
         if (!Account.shared().isLogin()) {
             // TODO: - 跳转到登录界面
-
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
             return false;
         }
         return true;
@@ -447,7 +456,26 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                             if (item[which].equals("删除")) {
                                 // 执行删除评论操作
                                 // TODO: - 进行网络请求
+                                Map<String, Object> param = new HashMap<>();
+                                param.put("id", detail.id);
+                                SCNetworkTool.shared().normalRequest(SCNetworkPort.DeleteComent, SCNetworkMethod.DELETE, param, new SCNetworkHandler() {
+                                    @Override
+                                    public void successHandle(JSONObject jsonObject) {
+                                        int code = jsonObject.getInteger("status");
+                                        if (code == 200) {
+                                            Toast.makeText(CommentActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                            models.remove(position);
+                                            adapter.notifyDataSetChanged();
+                                        } else {
+                                            Toast.makeText(CommentActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
 
+                                    @Override
+                                    public void errorHandle(Exception error) {
+                                        Toast.makeText(CommentActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             } else if (item[which].equals("举报")) {
                                 // 执行举报操作
                                 Toast.makeText(CommentActivity.this, "已举报", Toast.LENGTH_SHORT).show();
