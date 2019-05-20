@@ -5,6 +5,13 @@ public class UserModel {
     public String name;
     public String phone;
 
+    static UserModel testUser() {
+        UserModel userModel = new UserModel();
+        userModel.id = 1;
+        userModel.name = "123";
+        return userModel;
+    }
+
     public String getName() {
         return name;
     }

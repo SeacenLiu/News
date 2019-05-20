@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 int code = jsonObject.getInteger("status");
                 if (code == 200) {
                     // TODO: - 进行用户登录状态保存
+                    Account.shared().login(UserModel.testUser());
 
                     Toast toast = Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT);
                     toast.show();

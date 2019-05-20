@@ -1,15 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:gravity="center">
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:text="用户管理界面"-->
+    <!--android:gravity="center"/>-->
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/user_manager_welcome"
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/user_manager_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32dp"
+            android:textAlignment="textEnd"
+            android:textColor="@color/black_60_alpha"
+            android:text="Seacen"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="，你好！"
+            android:textSize="32dp"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@id/user_manager_welcome"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="用户管理界面"
-        android:gravity="center"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/user_manager_change"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textSize="26dp"
+            android:text="修改密码"
+            android:gravity="center"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/user_manager_logout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textSize="26dp"
+            android:text="退出登录"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:textAlignment="center"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

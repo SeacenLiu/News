@@ -58,13 +58,20 @@ public class RegisterActivity extends AppCompatActivity {
         SCNetworkTool.shared().normalRequest(SCNetworkPort.Register, SCNetworkMethod.POST, params, new SCNetworkHandler() {
             @Override
             public void successHandle(com.alibaba.fastjson.JSONObject jsonObject) {
-                Toast toast = Toast.makeText(RegisterActivity.this, jsonObject.toJSONString(), Toast.LENGTH_SHORT);
-                toast.show();
+                int code = jsonObject.getInteger("status");
+                if (code == 200) {
+                    Toast toast = Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT);
+                    toast.show();
+                    RegisterActivity.this.finish();
+                } else {
+                    Toast toast = Toast.makeText(RegisterActivity.this, "用户名已被注册", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
 
             @Override
             public void errorHandle(Exception error) {
-                Toast toast = Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });

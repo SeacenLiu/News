@@ -38,6 +38,9 @@
         <activity android:name=".News.NewsDetailActivity"></activity>
 
         <activity android:name=".Comment.CommentActivity"></activity>
+
+        <activity android:name=".Account.UserManagerActivity"></activity>
+        <activity android:name=".Account.PasswordModify"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
