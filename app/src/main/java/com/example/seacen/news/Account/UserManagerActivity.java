@@ -4,9 +4,11 @@ import android.accounts.AbstractAccountAuthenticator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +38,8 @@ public class UserManagerActivity extends AppCompatActivity {
 
     @OnClick(R.id.user_manager_change)
     void modifyClick() {
-        
+        Intent intent = new Intent(this, PasswordModifyActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.user_manager_logout)
@@ -58,5 +61,18 @@ public class UserManagerActivity extends AppCompatActivity {
         builder.setNegativeButton("取消",null);
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

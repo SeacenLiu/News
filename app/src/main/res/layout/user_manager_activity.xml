@@ -40,10 +40,10 @@
 
 
     <LinearLayout
-        android:layout_below="@id/user_manager_welcome"
-        android:layout_marginTop="50dp"
+        android:layout_centerInParent="true"
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -69,5 +69,13 @@
             />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text = "Copyright © 406小队 All Rights Reserved"/>
 
 </RelativeLayout>

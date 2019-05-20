@@ -1,9 +1,9 @@
 package com.example.seacen.news.Account;
 
-import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,7 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PasswordModify extends AppCompatActivity {
+public class PasswordModifyActivity extends AppCompatActivity {
 
     @BindView(R.id.password_activity_origin_Et)
     EditText originEt;
@@ -25,7 +25,7 @@ public class PasswordModify extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_manager_activity);
+        setContentView(R.layout.password_modify_activity);
         ButterKnife.bind(this);
 
 
@@ -53,5 +53,18 @@ public class PasswordModify extends AppCompatActivity {
         }
         // TODO: - 修改密码接口对接
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
