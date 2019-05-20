@@ -140,8 +140,6 @@ public class SCNetworkTool {
                             .build();
                     break;
                 case POST:
-//                    MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded; charset=UTF-8");
-//                    String requestBody = getRequestData(params, "utf-8").toString();
                     MediaType mediaType = MediaType.parse("application/json; charset=UTF-8");
                     String requestBody = JSONObject.toJSON(params).toString();
                     request = new Request.Builder()
@@ -154,6 +152,14 @@ public class SCNetworkTool {
                     request = new Request.Builder()
                             .url(url)
                             .delete()
+                            .build();
+                    break;
+                case PUT:
+                    MediaType mediaTypePut = MediaType.parse("application/json; charset=UTF-8");
+                    String putBody = JSONObject.toJSON(params).toString();
+                    request = new Request.Builder()
+                            .url(url)
+                            .put(RequestBody.create(mediaTypePut, putBody))
                             .build();
                     break;
             }

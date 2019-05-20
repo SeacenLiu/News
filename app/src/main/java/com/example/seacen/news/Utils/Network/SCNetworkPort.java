@@ -4,6 +4,7 @@ public enum SCNetworkPort {
     // 账户
     Register("/news/register"),
     Login("/news/login"),
+    UpdatePassword("/news/updatepasswd"),
     // 新闻
     AllClassify("/news/allclassify"),
     IndexNews("/news/indexnew"),

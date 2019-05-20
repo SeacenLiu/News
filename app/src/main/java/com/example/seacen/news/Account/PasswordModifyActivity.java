@@ -7,7 +7,15 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.seacen.news.R;
+import com.example.seacen.news.Utils.Network.SCNetworkHandler;
+import com.example.seacen.news.Utils.Network.SCNetworkMethod;
+import com.example.seacen.news.Utils.Network.SCNetworkPort;
+import com.example.seacen.news.Utils.Network.SCNetworkTool;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,8 +59,27 @@ public class PasswordModifyActivity extends AppCompatActivity {
             Toast.makeText(this, "新密码应与原密码不同", Toast.LENGTH_SHORT).show();
             return;
         }
-        // TODO: - 修改密码接口对接
+        Map<String, Object> param = new HashMap<>();
+        param.put("pripasswd", origin);
+        param.put("newpasswd", passwd);
+        SCNetworkTool.shared().normalRequest(SCNetworkPort.UpdatePassword, SCNetworkMethod.PUT, param, new SCNetworkHandler() {
+            @Override
+            public void successHandle(JSONObject jsonObject) {
+                int code = jsonObject.getInteger("status");
+                String msg = jsonObject.getString("msg");
+                if (code == 200) {
+                    Toast.makeText(PasswordModifyActivity.this, "密码修改成功", Toast.LENGTH_SHORT).show();
+                    PasswordModifyActivity.this.finish();
+                } else {
+                    Toast.makeText(PasswordModifyActivity.this,  msg, Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void errorHandle(Exception error) {
+                Toast.makeText(PasswordModifyActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
