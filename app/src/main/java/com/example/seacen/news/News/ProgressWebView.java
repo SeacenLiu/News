@@ -30,7 +30,7 @@ public class ProgressWebView  extends WebView  {
         progressbar = new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
         progressbar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dp2px(context, 3), 0, 0));
         //改变progressbar默认进度条的颜色（深红色）为Color.GREEN
-        progressbar.setProgressDrawable(new ClipDrawable(new ColorDrawable(Color.GREEN), Gravity.LEFT, ClipDrawable.HORIZONTAL));
+        progressbar.setProgressDrawable(new ClipDrawable(new ColorDrawable(Color.BLUE), Gravity.LEFT, ClipDrawable.HORIZONTAL));
         addView(progressbar);
     }
 

@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -19,15 +20,46 @@
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:text="新闻标题"
                 android:textSize="30dp"
                 />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/news_detail_activity_source_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="新闻来源"
+                    android:textAlignment="center"
+                    android:textSize="18dp"
+                    android:textColor="@color/black_60_alpha"/>
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/news_detail_activity_time_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="时间：一小时前"
+                    android:textAlignment="center"
+                    android:textSize="18dp"
+                    android:textColor="@color/black_60_alpha" />
+
+            </LinearLayout>
+
             <com.example.seacen.news.News.ProgressWebView
                 android:id="@+id/news_detail_activity_wb"
-                android:layout_marginTop="3dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >

@@ -21,6 +21,7 @@ import com.example.seacen.news.Utils.Network.SCNetworkHandler;
 import com.example.seacen.news.Utils.Network.SCNetworkMethod;
 import com.example.seacen.news.Utils.Network.SCNetworkPort;
 import com.example.seacen.news.Utils.Network.SCNetworkTool;
+import com.example.seacen.news.Utils.TimeUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,6 +38,10 @@ public class NewsDetailActivity extends AppCompatActivity {
     View commentIv;
     @BindView(R.id.news_detail_activity_title_tv)
     TextView titleTv;
+    @BindView(R.id.news_detail_activity_source_tv)
+    TextView sourceTv;
+    @BindView(R.id.news_detail_activity_time_tv)
+    TextView timeTv;
 
     NewsModel model;
 
@@ -56,6 +61,8 @@ public class NewsDetailActivity extends AppCompatActivity {
         setupWebView();
 
         titleTv.setText(model.getTitle());
+        sourceTv.setText("新闻来源：" + model.getSource());
+        timeTv.setText("时间：" + TimeUtil.getTimeFormatText(model.getTime()));
 
         // 请求详细
         SCNetworkPort port = SCNetworkPort.NewsDetail;
