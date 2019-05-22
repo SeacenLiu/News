@@ -6,6 +6,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebResourceRequest;
@@ -31,6 +32,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class NewsDetailActivity extends AppCompatActivity {
+
+    static String TAG = "NewsDetailActivity";
 
     @BindView(R.id.news_detail_activity_wb)
     WebView webView;
@@ -79,9 +82,6 @@ public class NewsDetailActivity extends AppCompatActivity {
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("<HTML><HEAD><LINK href=\"webview.min.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>");
-//                sb.append("<h1>");
-//                sb.append(model.title);
-//                sb.append("</h1>");
                 sb.append(htmlString);
                 sb.append("</body></HTML>");
                 webView.loadDataWithBaseURL("file:///android_asset/", sb.toString(), "text/html", "utf-8", null);
@@ -116,7 +116,6 @@ public class NewsDetailActivity extends AppCompatActivity {
         return result;
     }
 
-    //    @OnClick(R.id.news_detail_activity_comment_iv)
     @OnClick(R.id.news_detail_floting_Btn)
     void commentClick() {
         Intent intent = new Intent(NewsDetailActivity.this, CommentActivity.class);
