@@ -11,6 +11,7 @@ import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
@@ -34,6 +35,8 @@ public class NewsDetailActivity extends AppCompatActivity {
     WebView webView;
     @BindView(R.id.news_detail_floting_Btn)
     View commentIv;
+    @BindView(R.id.news_detail_activity_title_tv)
+    TextView titleTv;
 
     NewsModel model;
 
@@ -52,6 +55,8 @@ public class NewsDetailActivity extends AppCompatActivity {
         setupNavigation();
         setupWebView();
 
+        titleTv.setText(model.getTitle());
+
         // 请求详细
         SCNetworkPort port = SCNetworkPort.NewsDetail;
         port.setSuffix(model.getId());
@@ -67,9 +72,9 @@ public class NewsDetailActivity extends AppCompatActivity {
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("<HTML><HEAD><LINK href=\"webview.min.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>");
-                sb.append("<h1>");
-                sb.append(model.title);
-                sb.append("</h1>");
+//                sb.append("<h1>");
+//                sb.append(model.title);
+//                sb.append("</h1>");
                 sb.append(htmlString);
                 sb.append("</body></HTML>");
                 webView.loadDataWithBaseURL("file:///android_asset/", sb.toString(), "text/html", "utf-8", null);

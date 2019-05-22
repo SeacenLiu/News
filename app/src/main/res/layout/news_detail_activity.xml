@@ -4,12 +4,46 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.example.seacen.news.News.ProgressWebView
-        android:id="@+id/news_detail_activity_wb"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-    </com.example.seacen.news.News.ProgressWebView>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:background="@color/black_15_alpha"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/news_detail_activity_title_tv"
+                android:textColor="@color/black"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:text="新闻标题"
+                android:textSize="30dp"
+                />
+
+            <com.example.seacen.news.News.ProgressWebView
+                android:id="@+id/news_detail_activity_wb"
+                android:layout_marginTop="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+            </com.example.seacen.news.News.ProgressWebView>
+
+            <TextView
+                android:textColor="@color/black"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                />
+        </LinearLayout>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/news_detail_floting_Btn"
